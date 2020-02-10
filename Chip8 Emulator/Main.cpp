@@ -21,6 +21,9 @@ int main()
 		renderer.Render();
 		window.SwapBuffers();
 		window.PollEvents();
+
+		rec1.Move(2, 0);
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
