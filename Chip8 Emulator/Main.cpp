@@ -1,4 +1,4 @@
-#include "GraphicsEngine.h"
+#include "Renderer.h"
 #include <iostream>
 
 using namespace std;
@@ -6,15 +6,10 @@ using namespace GraphicsEngine;
 
 int main()
 {
-	try
-	{
-		Window window;
-		window.PollEvents();
-	}
-	catch (runtime_error & e)
-	{
-		cout << e.what() << endl;
-	}
+	Window window;
+	Renderer renderer(&window);
+
+	renderer.Run();
 
 	return 0;
 }

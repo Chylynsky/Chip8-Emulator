@@ -1,31 +1,34 @@
 #pragma once
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <utility>
+#include <cmath>
 #include "GL/glew.h"
-#include "GLFW/glfw3.h"
+#include "Window.h"
+#include "ShaderLoader.h"
 
 namespace GraphicsEngine
 {
-	class Window
+	class Renderer
 	{
 		static const int initWidth;
 		static const int initHeight;
 		static const char* defaultTitle;
 
-		GLFWwindow* window;
-
-		unsigned int LoadShaders(const std::string& vertexShaderLoadPath, const std::string& fragmentShaderLoadPath);
+		Window* window;
 
 	public:
 
-		Window();
-		~Window();
+		Renderer(Window* window);
+		~Renderer();
 
-		void PollEvents();
+		void Run();
+		void DrawRectangle(int x, int y, int width, int height);
 	};
 }
