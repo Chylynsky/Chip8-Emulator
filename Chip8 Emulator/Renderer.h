@@ -5,7 +5,7 @@
 #include "GL/glew.h"
 #include "Window.h"
 #include "ShaderLoader.h"
-#include "Rectangle.h"
+#include "Object.h"
 
 namespace GraphicsEngine
 {
@@ -13,14 +13,14 @@ namespace GraphicsEngine
 	{
 		Window* window;
 		unsigned int shaderProgramID;
-		std::vector<Rectangle*> objects;
+		std::vector<Object*> objects;
 
 	public:
 
 		Renderer(Window* window);
 		~Renderer();
 
-		void Attach(Rectangle* object);
+		void Attach(Object* object);
 		void Render();
 	};
 }

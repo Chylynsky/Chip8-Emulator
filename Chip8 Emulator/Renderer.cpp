@@ -10,7 +10,7 @@ namespace GraphicsEngine
 		// Use the shaders
 		glUseProgram(shaderProgramID);
 
-		for (auto elem : objects)
+		for (Object* elem : objects)
 			elem->Draw();
 	}
 
@@ -32,7 +32,7 @@ namespace GraphicsEngine
 
 	}
 
-	void Renderer::Attach(Rectangle* object)
+	void Renderer::Attach(Object* object)
 	{
 		objects.push_back(object);
 	}

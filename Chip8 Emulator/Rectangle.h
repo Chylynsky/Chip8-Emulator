@@ -10,26 +10,16 @@ namespace GraphicsEngine
 {
 	class Rectangle : public Object
 	{
-		// Position in pixels
-		int x;
-		int y;
-		int width;
-		int height;
-		// Position normalized
-		float _x;
-		float _y;
-		float _width;
-		float _height;
-
-		unsigned int vertexBuffer;
-		std::vector<float> bufferData;
-		Window* window;
+		// Diameters normalized
+		float width;
+		float height;
 
 	public:
 
 		Rectangle(Window* window, int x, int y, int width, int height);
+		~Rectangle();
 
-		void Draw();
-		void Move(int x, int y);
+		void Draw() override;
+		void Move(int x, int y) override;
 	};
 }

@@ -2,24 +2,21 @@
 
 namespace GraphicsEngine
 {
-	Rectangle::Rectangle(Window* window, int x, int y, int width, int height) : x{ x }, y{ y }, width{ width }, height{ height }, vertexBuffer{ 0 }, window{ window }
+	Rectangle::Rectangle(Window* window, int x, int y, int width, int height) : Object(window, x, y)
 	{
-		std::pair<float, float> tmp = window->GetPointNormalized(x, y);
+		std::pair<float, float> windowSize = window->GetWindowSize();
 
-		_x = tmp.first;
-		_y = tmp.second;
+		this->width = static_cast<float>(width) / windowSize.first;
+		this->height = static_cast<float>(height) / windowSize.second;
 
-		_width = static_cast<float>(width) / static_cast<float>(window->GetWindowSize().first);
-		_height = static_cast<float>(height) / static_cast<float>(window->GetWindowSize().second);
-
-		bufferData = std::vector<float>
+		bufferData = 
 		{
-			_x, _y, 0.0f,
-			_x, _y + _height, 0.0f,
-			_x + _width, _y + _height, 0.0f,
-			_x, _y, 0.0f,
-			_x + _width, _y, 0.0f,
-			_x + _width, _y + _height, 0.0f
+			this->x, this->y, 0.0f,
+			this->x, this->y + this->height, 0.0f,
+			this->x + this->width, this->y + this->height, 0.0f,
+			this->x, this->y, 0.0f,
+			this->x + this->width, this->y, 0.0f,
+			this->x + this->width, this->y + this->height, 0.0f
 		};
 
 		glGenBuffers(1, &vertexBuffer);
@@ -27,30 +24,34 @@ namespace GraphicsEngine
 		glBufferData(GL_ARRAY_BUFFER, bufferData.size() * sizeof(float), bufferData.data(), GL_DYNAMIC_DRAW);
 	}
 
+	Rectangle::~Rectangle()
+	{
+	}
+
 	void Rectangle::Draw()
 	{
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, nullptr);
 		glDrawArrays(GL_TRIANGLES, 0, 6); // Draw 2 triangles
 		glDisableVertexAttribArray(0);
 	}
 
 	void Rectangle::Move(int dx, int dy)
 	{
-		x += dx;
-		y += dy;
-		_x += static_cast<float>(dx) / window->GetWindowSize().first;
-		_y += static_cast<float>(dy) / window->GetWindowSize().second;
+		std::pair<float, float> windowSize = window->GetWindowSize();
 
-		bufferData = std::vector<float>
+		x += static_cast<float>(dx) / windowSize.first;
+		y += static_cast<float>(dy) / windowSize.first;
+
+		bufferData = 
 		{
-			_x, _y, 0.0f,
-			_x, _y + _height, 0.0f,
-			_x + _width, _y + _height, 0.0f,
-			_x, _y, 0.0f,
-			_x + _width, _y, 0.0f,
-			_x + _width, _y + _height, 0.0f
+			this->x, this->y, 0.0f,
+			this->x, this->y + this->height, 0.0f,
+			this->x + this->width, this->y + this->height, 0.0f,
+			this->x, this->y, 0.0f,
+			this->x + this->width, this->y, 0.0f,
+			this->x + this->width, this->y + this->height, 0.0f
 		};
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

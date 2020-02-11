@@ -2,14 +2,11 @@
 
 namespace GraphicsEngine
 {
-	Object::Object() : x{ 0.0f }, y{ 0.0f }
+	Object::Object(Window* window, int x, int y) : window{ window }, vertexBuffer{ 0 }
 	{
-
-	}
-
-	Object::Object(float x, float y) : x{ x }, y{ y }
-	{
-
+		std::pair<float, float> positionNormalized = window->GetPointNormalized(x, y);
+		this->x = positionNormalized.first;
+		this->y = positionNormalized.second;
 	}
 
 	Object::~Object()
