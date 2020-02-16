@@ -23,6 +23,7 @@
     <ProjectGuid>{57E921DC-29F5-4978-BE79-FDBA43396984}</ProjectGuid>
     <RootNamespace>Chip8Emulator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GraphicsEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

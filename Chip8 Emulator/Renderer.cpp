@@ -2,7 +2,7 @@
 
 namespace GraphicsEngine
 {
-	void Renderer::Render()
+	void Renderer::RenderCurrent()
 	{
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		// Clear the screen

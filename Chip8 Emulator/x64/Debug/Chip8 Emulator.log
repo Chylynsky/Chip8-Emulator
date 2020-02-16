@@ -1,2 +1,49 @@
-﻿  Renderer.cpp
-  Chip8 Emulator.vcxproj -> C:\Users\borch\source\repos\Chip8 Emulator\x64\Debug\Chip8 Emulator.exe
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Chip8 Emulator.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Circle.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\utility(207,16): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty1", możliwa utrata danych
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty1=float
+          ]
+C:\Users\borch\source\repos\Chip8 Emulator\Chip8 Emulator\Circle.cpp(56): message : zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept” funkcji szablon
+C:\Users\borch\source\repos\Chip8 Emulator\Chip8 Emulator\Circle.cpp(56): message : zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept” funkcji szablon
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\utility(207,1): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty2", możliwa utrata danych
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty2=float
+          ]
+  Main.cpp
+  Object.cpp
+  Rectangle.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\utility(207,16): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty1", możliwa utrata danych
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty1=float
+          ]
+C:\Users\borch\source\repos\Chip8 Emulator\Chip8 Emulator\Rectangle.cpp(7): message : zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept” funkcji szablon
+C:\Users\borch\source\repos\Chip8 Emulator\Chip8 Emulator\Rectangle.cpp(7): message : zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept” funkcji szablon
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\utility(207,1): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty2", możliwa utrata danych
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty2=float
+          ]
+  Renderer.cpp
+  Window.cpp
+  Generowanie kodu...
+  Chip8 Emulator.vcxproj -> C:\Users\borch\source\repos\Chip8 Emulator\x64\Debug\GraphicsEngine.exe

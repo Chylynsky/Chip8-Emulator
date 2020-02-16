@@ -2,9 +2,9 @@
 
 namespace GraphicsEngine
 {
-	const int Window::initHeight{ 400 };
-	const int Window::initWidth{ 600 };
-	const std::string Window::defaultTitle{ "GLFW Window" };
+	const int Window::INITIAIL_HEIGHT{ 400 };
+	const int Window::INITIAL_WIDTH{ 600 };
+	const std::string Window::DEFAULT_TITLE{ "GLFW Window" };
 
 	Window::Window(int width, int height, std::string title)
 	{

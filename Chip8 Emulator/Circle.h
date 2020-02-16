@@ -9,7 +9,7 @@ namespace GraphicsEngine
 {
 	class Circle : public Object
 	{
-		static const float pi;
+		static const float PI;
 		// Number of triangles that form a circle
 		static const int N;
 

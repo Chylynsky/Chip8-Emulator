@@ -9,14 +9,14 @@ int main()
 	Renderer renderer(&window);
 
 	Circle cir(&window, 300, 300, 100);
-	Rectangle rec(&window, 200, 100, 100, 100);
+	Rectangle rec(&window, 100, 100, 300, 300);
 
 	renderer.Attach(&cir);
 	renderer.Attach(&rec);
 
 	while (!window.WindowShouldClose())
 	{
-		renderer.Render();
+		renderer.RenderCurrent();
 		window.SwapBuffers();
 		window.PollEvents();
 

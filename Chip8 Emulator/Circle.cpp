@@ -2,7 +2,7 @@
 
 namespace GraphicsEngine
 {
-	const float Circle::pi{ 3.14159265358979323846f };
+	const float Circle::PI{ 3.14159265358979323846f };
 	const int Circle::N{ 8 * 6 };
 
 	Circle::Circle(Window* window, int x, int y, int radius) : Object(window, x, y)
@@ -14,15 +14,18 @@ namespace GraphicsEngine
 
 		for (int i = 0; i < N; i++)
 		{
+			// Center of the circle
 			bufferData.push_back(this->x);
 			bufferData.push_back(this->y);
 			bufferData.push_back(0.0f);
 
+			// Get point on the current radius
 			bufferData.push_back(this->x + this->radius * std::cos(currentAngle));
 			bufferData.push_back(this->y + this->radius * std::sin(currentAngle));
 			bufferData.push_back(0.0f);
 
-			currentAngle = 2.0f * pi * static_cast<float>(i + 1) / static_cast<float>(N);
+			// Rotate radius
+			currentAngle = 2.0f * PI * static_cast<float>(i + 1) / static_cast<float>(N);
 
 			bufferData.push_back(this->x + this->radius * std::cos(currentAngle));
 			bufferData.push_back(this->y + this->radius * std::sin(currentAngle));
@@ -44,7 +47,7 @@ namespace GraphicsEngine
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 		glVertexAttribPointer(0, 3, GL_FLOAT, true, 0, nullptr);
-		glDrawArrays(GL_TRIANGLES, 0, N * 9); // Draw N triangles
+		glDrawArrays(GL_TRIANGLES, 0, N * 9);
 		glDisableVertexAttribArray(0);
 	}
 
@@ -61,12 +64,12 @@ namespace GraphicsEngine
 			bufferData.push_back(this->y);
 			bufferData.push_back(0.0f);
 
-			bufferData.push_back(this->x + this->radius * std::cos(2.0f * pi * static_cast<float>(i) / static_cast<float>(N)));
-			bufferData.push_back(this->y + this->radius * std::sin(2.0f * pi * static_cast<float>(i) / static_cast<float>(N)));
+			bufferData.push_back(this->x + this->radius * std::cos(2.0f * PI * static_cast<float>(i) / static_cast<float>(N)));
+			bufferData.push_back(this->y + this->radius * std::sin(2.0f * PI * static_cast<float>(i) / static_cast<float>(N)));
 			bufferData.push_back(0.0f);
 
-			bufferData.push_back(this->x + this->radius * std::cos(2.0f * pi * static_cast<float>(i + 1) / static_cast<float>(N)));
-			bufferData.push_back(this->y + this->radius * std::sin(2.0f * pi * static_cast<float>(i + 1) / static_cast<float>(N)));
+			bufferData.push_back(this->x + this->radius * std::cos(2.0f * PI * static_cast<float>(i + 1) / static_cast<float>(N)));
+			bufferData.push_back(this->y + this->radius * std::sin(2.0f * PI * static_cast<float>(i + 1) / static_cast<float>(N)));
 			bufferData.push_back(0.0f);
 		}
 

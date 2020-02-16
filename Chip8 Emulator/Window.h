@@ -9,15 +9,15 @@ namespace GraphicsEngine
 {
 	class Window
 	{
-		static const int initWidth;
-		static const int initHeight;
-		static const std::string defaultTitle;
+		static const int INITIAL_WIDTH;
+		static const int INITIAIL_HEIGHT;
+		static const std::string DEFAULT_TITLE;
 
 		GLFWwindow* window;
 
 	public:
 
-		explicit Window(int width = initWidth, int height = initHeight, std::string title = defaultTitle);
+		explicit Window(int width = INITIAL_WIDTH, int height = INITIAIL_HEIGHT, std::string title = DEFAULT_TITLE);
 		~Window();
 
 		std::pair<int, int> GetWindowSize();

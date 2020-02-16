@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chip8 Emulator", "Chip8 Emulator\Chip8 Emulator.vcxproj", "{57E921DC-29F5-4978-BE79-FDBA43396984}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsEngine", "Chip8 Emulator\Chip8 Emulator.vcxproj", "{57E921DC-29F5-4978-BE79-FDBA43396984}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chip8", "Chip8\Chip8.vcxproj", "{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{57E921DC-29F5-4978-BE79-FDBA43396984}.Release|x64.Build.0 = Release|x64
 		{57E921DC-29F5-4978-BE79-FDBA43396984}.Release|x86.ActiveCfg = Release|Win32
 		{57E921DC-29F5-4978-BE79-FDBA43396984}.Release|x86.Build.0 = Release|Win32
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Debug|x64.ActiveCfg = Debug|x64
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Debug|x64.Build.0 = Debug|x64
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Debug|x86.ActiveCfg = Debug|Win32
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Debug|x86.Build.0 = Debug|Win32
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Release|x64.ActiveCfg = Release|x64
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Release|x64.Build.0 = Release|x64
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Release|x86.ActiveCfg = Release|Win32
+		{9E8F5797-BD9E-40BC-AAE5-34F5E07B5928}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

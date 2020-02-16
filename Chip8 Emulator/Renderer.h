@@ -21,6 +21,6 @@ namespace GraphicsEngine
 		~Renderer();
 
 		void Attach(Object* object);
-		void Render();
+		void RenderCurrent();
 	};
 }
