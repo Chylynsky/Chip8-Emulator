@@ -14,7 +14,7 @@ namespace Chip8
 		GeneralPurposeRegisters& generalPurposeRegisters;
 		RAM& ram;
 		Stack& stack;
-		uint16_t memoryAddressRegister;
+		MemoryAddressRegister memoryAddressRegister;
 		uint16_t programCounter;
 
 		CPU();

@@ -5,6 +5,8 @@ namespace Chip8
 {
 	enum class RegisterName { V0, V1, V2, V3, V4, V5, V6, V7, V8, V9, VA, VB, VC, VD, VE, VF };
 
+	using MemoryAddressRegister = uint16_t;
+
 	class GeneralPurposeRegisters
 	{
 		static constexpr uint8_t NUMBER_OF_REGISTERS{ 16 };
