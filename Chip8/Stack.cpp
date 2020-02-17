@@ -6,7 +6,7 @@ namespace Chip8
 
 	Stack::Stack() : stackPointer{ stack }
 	{
-
+		
 	}
 
 	Stack& Stack::GetInstance()
@@ -14,22 +14,25 @@ namespace Chip8
 		return instance;
 	}
 
-	inline bool Stack::IsEmpty()
+	bool Stack::IsEmpty()
 	{
 		return (stackPointer == stack);
 	}
-	inline uint16_t Stack::Top()
+
+	uint16_t Stack::Top()
 	{
-		return *stackPointer;
+		return *(stackPointer - 1);
 	}
 
-	inline void Stack::Push(uint16_t value)
+	void Stack::Push(uint16_t value)
 	{
-		*(stackPointer++) = value;
+		*stackPointer = value;
+		stackPointer++;
 	}
 
-	inline void Stack::Pop()
+	void Stack::Pop()
 	{
-		stackPointer--;
+		if (!IsEmpty())
+			stackPointer--;
 	}
 }

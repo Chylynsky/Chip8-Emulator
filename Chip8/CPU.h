@@ -1,20 +1,25 @@
 #pragma once
 #include <cstdint>
 #include "RAM.h"
-#include "Registers.h"
 #include "Stack.h"
 #include "Timer.h"
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
 
 namespace Chip8
 {
 	class CPU
 	{
+		static constexpr uint8_t NUMBER_OF_REGISTERS{ 16 };
+
 		static CPU instance;
 
-		GeneralPurposeRegisters& generalPurposeRegisters;
 		RAM& ram;
 		Stack& stack;
-		MemoryAddressRegister memoryAddressRegister;
+		uint8_t generalPurposeRegisters[NUMBER_OF_REGISTERS];
+		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
 
 		CPU();
@@ -22,7 +27,7 @@ namespace Chip8
 	public:
 		
 		static CPU& GetInstance();
-		void Execute(uint16_t instruction);
+		void Execute();
 
 		CPU& operator=(const CPU&) = delete;
 		CPU& operator=(CPU&&) = delete;

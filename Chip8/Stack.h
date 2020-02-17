@@ -17,10 +17,10 @@ namespace Chip8
 	public:
 
 		static Stack& GetInstance();
-		inline bool IsEmpty();
-		inline uint16_t Top();
-		inline void Push(uint16_t value);
-		inline void Pop();
+		bool IsEmpty();
+		uint16_t Top();
+		void Push(uint16_t value);
+		void Pop();
 
 		Stack& operator=(const Stack&) = delete;
 		Stack& operator=(Stack&&) = delete;

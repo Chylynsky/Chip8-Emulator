@@ -1,7 +1,5 @@
 #include <iostream>
-#include "RAM.h"
-#include "Registers.h"
-#include "Timer.h"
+#include <thread>
 #include "CPU.h"
 
 using namespace std;
@@ -9,9 +7,23 @@ using namespace Chip8;
 
 int main()
 {
-	CPU& cpu = CPU::GetInstance();
-	cpu.Execute(6 << 12 | 3 << 8 | 6);
-	cpu.Execute(7 << 12 | 3 << 8 | 6);
+	RAM& ram{ RAM::GetInstance() };
+	CPU& cpu{ CPU::GetInstance() };
+
+	try 
+	{
+		ram.LoadFile("test.ch8");
+	}
+	catch (std::exception & e)
+	{
+		std::cout << e.what();
+	}
+
+	while (true)
+	{
+		cpu.Execute();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
 	
 	return 0;
 }
