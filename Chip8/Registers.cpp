@@ -2,18 +2,20 @@
 
 namespace Chip8
 {
-	Registers Registers::instance{ };
+	GeneralPurposeRegisters GeneralPurposeRegisters::instance{};
 
-	Registers& Registers::GetInstance()
+	GeneralPurposeRegisters& GeneralPurposeRegisters::GetInstance()
 	{
 		return instance;
 	}
-	uint8_t& Registers::operator[](RegisterName registerName)
+
+	uint8_t& GeneralPurposeRegisters::operator[](RegisterName registerName)
 	{
-		return dataRegister[static_cast<uint8_t>(registerName)];
+		return generalPurposeRegister[static_cast<uint8_t>(registerName)];
 	}
-	uint8_t& Registers::operator[](uint8_t registerNumber)
+
+	uint8_t& GeneralPurposeRegisters::operator[](uint8_t registerNumber)
 	{
-		return dataRegister[registerNumber];
+		return generalPurposeRegister[registerNumber];
 	}
 }
