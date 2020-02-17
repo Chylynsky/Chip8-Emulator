@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <string>
+#include "ROMLoader.h"
 
 namespace Chip8
 {
@@ -14,6 +16,7 @@ namespace Chip8
 	public:
 
 		static RAM& GetInstance();
+		void LoadFile(const std::string& loadPath);
 
 		RAM& operator=(const RAM&) = delete;
 		RAM& operator=(RAM&&) = delete;

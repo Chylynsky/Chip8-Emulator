@@ -1,1 +1,4 @@
 .vs/
+x64/
+Chip8/x64/
+GraphicsEngine/x64/
