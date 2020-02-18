@@ -4,15 +4,23 @@ namespace Chip8
 {
 	RAM RAM::instance{};
 
+	RAM::RAM() : memory{ std::vector<uint8_t>(MEMORY_CAPACITY) }
+	{
+
+	}
+
 	RAM& RAM::GetInstance()
 	{
 		return instance;
 	}
 
-	void RAM::LoadFile(const std::string& loadPath)
+	void RAM::LoadROM(const std::string& loadPath)
 	{
-		ROMLoader loader{ loadPath };
+		ROMLoader loader{ loadPath }; // May throw
+
 		int address = 0x200; // Start at memory address of 0x200
+
+		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 
 		while (loader >> memory[address])
 			address++;

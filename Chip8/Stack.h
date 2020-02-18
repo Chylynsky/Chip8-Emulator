@@ -9,7 +9,7 @@ namespace Chip8
 
 		static Stack instance;
 
-		uint16_t stack[STACK_SIZE];
+		uint16_t memory[STACK_SIZE];
 		uint16_t* stackPointer;
 
 		Stack();

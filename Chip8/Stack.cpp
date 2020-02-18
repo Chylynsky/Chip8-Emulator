@@ -4,7 +4,7 @@ namespace Chip8
 {
 	Stack Stack::instance{};
 
-	Stack::Stack() : stackPointer{ stack }
+	Stack::Stack() : stackPointer{ memory }
 	{
 		
 	}
@@ -16,7 +16,7 @@ namespace Chip8
 
 	bool Stack::IsEmpty()
 	{
-		return (stackPointer == stack);
+		return (stackPointer == memory);
 	}
 
 	uint16_t Stack::Top()

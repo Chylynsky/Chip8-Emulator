@@ -1,7 +1,8 @@
 #pragma once
 #include <cstdint>
+#include <stack>
+#include <mutex>
 #include "RAM.h"
-#include "Stack.h"
 #include "Timer.h"
 
 #ifdef _DEBUG
@@ -17,7 +18,7 @@ namespace Chip8
 		static CPU instance;
 
 		RAM& ram;
-		Stack& stack;
+		std::stack<uint16_t> stack;
 		uint8_t generalPurposeRegisters[NUMBER_OF_REGISTERS];
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
@@ -27,7 +28,8 @@ namespace Chip8
 	public:
 		
 		static CPU& GetInstance();
-		void Execute();
+		void ExecuteCycle();
+		void Reset();
 
 		CPU& operator=(const CPU&) = delete;
 		CPU& operator=(CPU&&) = delete;

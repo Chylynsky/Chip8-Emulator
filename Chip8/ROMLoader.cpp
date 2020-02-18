@@ -14,6 +14,7 @@ namespace Chip8
 	{
 		file.close();
 	}
+
 	std::ifstream& ROMLoader::operator>>(uint8_t& value)
 	{
 		file >> value;

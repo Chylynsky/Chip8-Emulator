@@ -1,7 +1,16 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <mutex>
+#include <vector>
+#include <exception>
+#include <stdexcept>
 #include "ROMLoader.h"
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 
 namespace Chip8
 {
@@ -11,12 +20,16 @@ namespace Chip8
 
 		static RAM instance;
 
-		uint8_t memory[MEMORY_CAPACITY];
+		std::vector<uint8_t> memory;
+
+		RAM();
 
 	public:
 
+		std::mutex ramMutex;
+
 		static RAM& GetInstance();
-		void LoadFile(const std::string& loadPath);
+		void LoadROM(const std::string& loadPath);
 
 		RAM& operator=(const RAM&) = delete;
 		RAM& operator=(RAM&&) = delete;

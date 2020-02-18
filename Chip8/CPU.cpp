@@ -1,17 +1,12 @@
 #include "CPU.h"
 
-/*
-	TO DO:
-	- licznik programu zwiêkszany o 2 po ka¿dej instrukcji (pocz¹tek instrukcji zawsze pod parzystym adresem)
-	- implementacja wszystkich instrukcji
-*/
-
 namespace Chip8
 {
 	CPU CPU::instance{};
 
-	CPU::CPU() : ram{ RAM::GetInstance() }, stack{ Stack::GetInstance() }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
+	CPU::CPU() : ram{ RAM::GetInstance() }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
 	{
+
 	}
 
 	CPU& CPU::GetInstance()
@@ -20,11 +15,13 @@ namespace Chip8
 	}
 
 	// Comments in CPU::Execute method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
-	void CPU::Execute()
+	void CPU::ExecuteCycle()
 	{
-		uint16_t instruction = ram[programCounter] << 8 | ram[programCounter + 1];
+		static uint16_t instruction = 0;
 
-		switch (instruction >> 0xC)
+		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
+		
+		switch (instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
 		{
 		case 0x0:
 			switch (instruction & 0xFF)
@@ -33,12 +30,13 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0xEE: // 00EE - The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
-				programCounter = stack.Top();
-				stack.Pop();
+				programCounter = stack.top();
+				stack.pop();
+				programCounter += 2;
 				break;
 			default: 
 #ifdef _DEBUG
-				std::cout << "Instruction " << instruction << " not recognized." << std::endl;
+				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
 #endif
 				programCounter += 2;
 				break;
@@ -48,24 +46,27 @@ namespace Chip8
 			programCounter = instruction & 0xFFF;
 			break;
 		case 0x2: // 2nnn - The interpreter increments the stack pointer, then puts the current PC on the top of the stack. The PC is then set to nnn.
-			stack.Push(programCounter);
+			stack.push(programCounter);
 			programCounter = instruction & 0xFFF;
 			break;
-		case 0x3: // 3xkk - The interpreter compares register Vx to kk, and if they are equal, increments the program counter by 4 (2 instructions forward).
-			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == (instruction & 0xFF)) ? 4 : 2;
+		case 0x3: // 3xkk - The interpreter compares register Vx to kk, and if they are equal, increments the program counter by 2.
+			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == (instruction & 0xFF)) ? 2 : 0;
+			programCounter += 2;
 			break;
-		case 0x4: // 4xkk - The interpreter compares register Vx to kk, and if they are not equal, increments the program counter by 4 (2 instructions forward).
-			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != (instruction & 0xFF)) ? 4 : 2;
+		case 0x4: // 4xkk - The interpreter compares register Vx to kk, and if they are not equal, increments the program counter by 2.
+			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != (instruction & 0xFF)) ? 2 : 0;
+			programCounter += 2;
 			break;
-		case 0x5: // 5xy0 - The interpreter compares register Vx to register Vy, and if they are equal, increments the program counter by 4 (2 instructions forward).
-			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == generalPurposeRegisters[instruction >> 0x4 & 0xF]) ? 4 : 2;
+		case 0x5: // 5xy0 - The interpreter compares register Vx to register Vy, and if they are equal, increments the program counter by 2.
+			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == generalPurposeRegisters[instruction >> 0x4 & 0xF]) ? 2 : 0;
+			programCounter += 2;
 			break;
 		case 0x6: // 6xkk - The interpreter puts the value kk into register Vx.
-			generalPurposeRegisters[(instruction >> 0x8) & 0xF] = instruction & 0xFF;
+			generalPurposeRegisters[instruction >> 0x8 & 0xF] = instruction & 0xFF;
 			programCounter += 2;
 			break;
 		case 0x7: // 7xkk - Adds the value kk to the value of register Vx, then stores the result in Vx.
-			generalPurposeRegisters[(instruction >> 0x8) & 0xF] += instruction & 0xFF;
+			generalPurposeRegisters[instruction >> 0x8 & 0xF] += (instruction & 0xFF);
 			programCounter += 2;
 			break;
 		case 0x8:
@@ -114,7 +115,7 @@ namespace Chip8
 				break;
 			default:
 #ifdef _DEBUG
-				std::cout << "Instruction " << instruction << " not recognized." << std::endl;
+				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
 #endif
 				programCounter += 2;
 				break;
@@ -122,14 +123,14 @@ namespace Chip8
 			break;
 		case 0x9: // 9xy0 - The values of Vx and Vy are compared, and if they are not equal, the program counter is increased by 2.
 			programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != generalPurposeRegisters[instruction >> 0x4 & 0xF]) ? 2 : 0;
+			programCounter += 2;
 			break;
 		case 0xA: // Annn - The value of register I is set to nnn.
 			memoryAddressRegister = instruction & 0xFFF;
 			programCounter += 2;
 			break;
 		case 0xB: // Bnnn - The program counter is set to nnn plus the value of V0.
-			programCounter = generalPurposeRegisters[0x0] + instruction & 0xFFF;
-			programCounter += 2;
+			programCounter = generalPurposeRegisters[0x0] + (instruction & 0xFFF);
 			break;
 		case 0xC:
 			programCounter += 2;
@@ -175,14 +176,26 @@ namespace Chip8
 					generalPurposeRegisters[i] = ram[memoryAddressRegister + i];
 				programCounter += 2;
 				break;
+			default:
+#ifdef _DEBUG
+				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
+#endif
+				programCounter += 2;
+				break;
 			}
 			break;
 		default:
 #ifdef _DEBUG
-			std::cout << "Instruction " << instruction << " not recognized." << std::endl;
+			std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
 #endif
 			programCounter += 2;
 			break;
 		}
+	}
+
+	void CPU::Reset()
+	{
+		programCounter = 0x200;
+		memoryAddressRegister = 0;
 	}
 }
