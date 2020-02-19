@@ -16,23 +16,20 @@ namespace Chip8
 	class CPU
 	{
 		static constexpr uint8_t NUMBER_OF_REGISTERS{ 16 };
-		static CPU instance;
 
 		RAM& ram;
-		DelayCounter& delayCounter;
-		SoundCounter& soundCounter;
+		Counter& delayCounter;
+		Counter& soundCounter;
 		std::stack<uint16_t> stack;
 		std::vector<uint8_t> generalPurposeRegisters;
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
 
-		CPU();
-
 	public:
 
 		std::mutex cpuMutex;
 		
-		static CPU& GetInstance();
+		CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter);
 		void ExecuteCycle();
 		void Reset();
 

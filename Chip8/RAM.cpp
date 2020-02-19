@@ -2,16 +2,9 @@
 
 namespace Chip8
 {
-	RAM RAM::instance{};
-
 	RAM::RAM() : memory{ std::vector<uint8_t>(MEMORY_CAPACITY) }
 	{
 
-	}
-
-	RAM& RAM::GetInstance()
-	{
-		return instance;
 	}
 
 	void RAM::LoadROM(const std::string& loadPath)

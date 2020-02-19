@@ -15,20 +15,17 @@ namespace Chip8
 	class Interpreter
 	{
 		static constexpr std::chrono::milliseconds PERIOD{ 100 };
-		static Interpreter instance;
 
+		RAM ram;
+		Counter delayCounter;
+		Counter soundCounter;
+		CPU cpu;
 		Timer mainClock;
-		CPU& cpu;
-		RAM& ram;
-		DelayCounter& delayCounter;
-		SoundCounter& soundCounter;
-
-		Interpreter();
-		~Interpreter();
 
 	public:
 
-		static Interpreter& GetInstance();
+		Interpreter();
+		~Interpreter();
 		void LoadROM(const std::string& loadPath);
 		void Start();
 		void Stop();

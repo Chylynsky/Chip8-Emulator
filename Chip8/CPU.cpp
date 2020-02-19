@@ -2,17 +2,10 @@
 
 namespace Chip8
 {
-	CPU CPU::instance{};
-
-	CPU::CPU() : ram{ RAM::GetInstance() }, delayCounter{ DelayCounter::GetInstance() }, soundCounter{ SoundCounter::GetInstance() },
+	CPU::CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter) : ram{ ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
 		generalPurposeRegisters{ std::vector<uint8_t>(NUMBER_OF_REGISTERS) }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
 	{
 
-	}
-
-	CPU& CPU::GetInstance()
-	{
-		return instance;
 	}
 
 	// Comments in CPU::Execute method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1

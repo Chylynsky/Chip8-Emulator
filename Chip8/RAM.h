@@ -18,17 +18,13 @@ namespace Chip8
 	{
 		static constexpr uint16_t MEMORY_CAPACITY{ 4096 };
 
-		static RAM instance;
-
 		std::vector<uint8_t> memory;
-
-		RAM();
 
 	public:
 
 		std::mutex ramMutex;
 
-		static RAM& GetInstance();
+		RAM();
 		void LoadROM(const std::string& loadPath);
 
 		RAM& operator=(const RAM&) = delete;

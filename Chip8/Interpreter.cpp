@@ -2,24 +2,16 @@
 
 namespace Chip8
 {
-	Interpreter Interpreter::instance{};
-
-	Interpreter::Interpreter() : mainClock{ PERIOD }, cpu{ CPU::GetInstance() }, ram{ RAM::GetInstance() }, 
-		delayCounter{ DelayCounter::GetInstance() }, soundCounter{ SoundCounter::GetInstance() }
+	Interpreter::Interpreter() : ram{}, delayCounter{}, soundCounter{}, cpu{ ram, delayCounter, soundCounter }, mainClock{ PERIOD }
 	{
-		mainClock.AttachCallback(std::bind(&DelayCounter::Decrement, &delayCounter));
-		mainClock.AttachCallback(std::bind(&SoundCounter::Decrement, &soundCounter));
+		mainClock.AttachCallback(std::bind(&Counter::Decrement, &delayCounter));
+		mainClock.AttachCallback(std::bind(&Counter::Decrement, &soundCounter));
 		mainClock.AttachCallback(std::bind(&CPU::ExecuteCycle, &cpu));
 	}
 
 	Interpreter::~Interpreter()
 	{
 		mainClock.Stop();
-	}
-
-	Interpreter& Interpreter::GetInstance()
-	{
-		return instance;
 	}
 
 	void Interpreter::LoadROM(const std::string& loadPath)
