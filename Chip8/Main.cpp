@@ -8,6 +8,11 @@ int main()
 
 	Interpreter& interpreter{ Interpreter::GetInstance() };
 	interpreter.LoadROM("roms/test.ch8");
-	
+	interpreter.Start();
+
+	cin.get();
+
+	//interpreter.Stop();
+
 	return 0;
 }

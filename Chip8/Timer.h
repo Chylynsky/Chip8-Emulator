@@ -1,10 +1,14 @@
 #pragma once
 #include <cstdint>
 #include <chrono>
+#include <initializer_list>
 #include <thread>
 #include <vector>
+#include <atomic>
 #include <cmath>
 #include <functional>
+#include <algorithm>
+#include <utility>
 
 namespace Chip8
 {
@@ -13,8 +17,7 @@ namespace Chip8
 		std::thread timerThread;
 		std::vector<std::function<void(void)>> callbacks;
 		std::chrono::milliseconds period;
-		uint8_t value;
-		bool terminate;
+		std::atomic<bool> terminate;
 
 		void TimerProcess();
 
@@ -22,8 +25,11 @@ namespace Chip8
 
 		explicit Timer(std::chrono::milliseconds period);
 		Timer(std::chrono::milliseconds period, std::function<void(void)> callback);
+		Timer(std::chrono::milliseconds period, std::initializer_list<std::function<void(void)>> callbacks);
 		~Timer();
 
+		void Start();
+		void Stop();
 		void AttachCallback(std::function<void(void)> callback);
 	};
 }

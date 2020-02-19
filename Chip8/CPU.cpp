@@ -4,7 +4,8 @@ namespace Chip8
 {
 	CPU CPU::instance{};
 
-	CPU::CPU() : ram{ RAM::GetInstance() }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
+	CPU::CPU() : ram{ RAM::GetInstance() }, delayCounter{ DelayCounter::GetInstance() }, soundCounter{ SoundCounter::GetInstance() },
+		generalPurposeRegisters{ std::vector<uint8_t>(NUMBER_OF_REGISTERS) }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
 	{
 
 	}
@@ -19,6 +20,7 @@ namespace Chip8
 	{
 		static uint16_t instruction = 0;
 
+		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
 		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
 		
 		switch (instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
@@ -195,7 +197,9 @@ namespace Chip8
 
 	void CPU::Reset()
 	{
-		programCounter = 0x200;
+		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
+		std::stack<uint16_t>().swap(stack);
 		memoryAddressRegister = 0;
+		programCounter = 0x200;
 	}
 }

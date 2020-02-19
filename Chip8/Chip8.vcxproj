@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Counters.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -152,6 +153,7 @@
     <Text Include="opcodes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Counters.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="RAM.h" />
