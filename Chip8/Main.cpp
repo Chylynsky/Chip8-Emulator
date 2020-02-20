@@ -7,7 +7,7 @@ int main()
 	using namespace Chip8;
 
 	Interpreter interpreter{};
-	interpreter.LoadROM("roms/test.ch8");
+	interpreter.LoadROM("roms/test1.ch8");
 	interpreter.Start();
 
 	cin.get();

@@ -11,7 +11,9 @@ namespace Chip8
 	public:
 
 		Counter();
+		~Counter();
 		void SetValue(uint8_t value);
+		uint8_t GetValue();
 		void Decrement();
 
 		Counter& operator=(const Counter&) = delete;

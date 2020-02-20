@@ -24,8 +24,6 @@ namespace Chip8
 	public:
 
 		explicit Timer(std::chrono::milliseconds period);
-		Timer(std::chrono::milliseconds period, std::function<void(void)> callback);
-		Timer(std::chrono::milliseconds period, std::initializer_list<std::function<void(void)>> callbacks);
 		~Timer();
 
 		void Start();

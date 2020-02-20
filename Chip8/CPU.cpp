@@ -3,9 +3,13 @@
 namespace Chip8
 {
 	CPU::CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter) : ram{ ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
-		generalPurposeRegisters{ std::vector<uint8_t>(NUMBER_OF_REGISTERS) }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }
+		generalPurposeRegisters{ std::vector<uint8_t>(NUMBER_OF_REGISTERS) }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }, Random{ 0, 255 }
 	{
 
+	}
+
+	CPU::~CPU()
+	{
 	}
 
 	// Comments in CPU::Execute method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
@@ -14,14 +18,14 @@ namespace Chip8
 		static uint16_t instruction = 0;
 
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
-		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
 		
 		switch (instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
 		{
 		case 0x0:
 			switch (instruction & 0xFF)
 			{
-			case 0xE0:
+			case 0xE0: // 00E0 - Clear the display.
+				std::cout << "Clear the display." << std::endl;
 				programCounter += 2;
 				break;
 			case 0xEE: // 00EE - The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
@@ -38,7 +42,7 @@ namespace Chip8
 			}
 			break;
 		case 0x1: // 1nnn - The interpreter sets the program counter to nnn.
-			programCounter = instruction & 0xFFF;
+			programCounter = instruction & 0xFFF; 
 			break;
 		case 0x2: // 2nnn - The interpreter increments the stack pointer, then puts the current PC on the top of the stack. The PC is then set to nnn.
 			stack.push(programCounter);
@@ -127,28 +131,43 @@ namespace Chip8
 		case 0xB: // Bnnn - The program counter is set to nnn plus the value of V0.
 			programCounter = generalPurposeRegisters[0x0] + (instruction & 0xFFF);
 			break;
-		case 0xC:
+		case 0xC: // Cxkk - The interpreter generates a random number from 0 to 255, which is then ANDed with the value kk. The results are stored in Vx.
+			generalPurposeRegisters[instruction >> 8 & 0xF] = (instruction & 0xFF) & static_cast<uint8_t>(Random(randomEngine));
 			programCounter += 2;
 			break;
 		case 0xD:
+#ifdef _DEBUG
+			std::cout << "Drawing..." << std::endl;
+#endif
 			programCounter += 2;
 			break;
 		case 0xE:
+#ifdef _DEBUG
+			std::cout << "Keyboard input required: " << std::endl;
+			std::cin.get();
+#endif
 			programCounter += 2;
 			break;
 		case 0xF:
 			switch (instruction & 0xFF)
 			{
-			case 0x07:
+			case 0x07: // Fx07 - The value of DT is placed into Vx.
+				generalPurposeRegisters[instruction >> 8 & 0xF] = delayCounter.GetValue();
 				programCounter += 2;
 				break;
 			case 0x0A:
+#ifdef _DEBUG
+				std::cout << "Keyboard input required: " << std::endl;
+				std::cin.get();
+#endif
 				programCounter += 2;
 				break;
-			case 0x15:
+			case 0x15: // Fx15 - DT is set equal to the value of Vx.
+				delayCounter.SetValue(generalPurposeRegisters[instruction >> 8 & 0xF]);
 				programCounter += 2;
 				break;
 			case 0x18:
+				soundCounter.SetValue(generalPurposeRegisters[instruction >> 8 & 0xF]);
 				programCounter += 2;
 				break;
 			case 0x1E: // Fx1E - The values of I and Vx are added, and the results are stored in I.
@@ -158,7 +177,10 @@ namespace Chip8
 			case 0x29:
 				programCounter += 2;
 				break;
-			case 0x33:
+			case 0x33: // Fx33 - The interpreter takes the decimal value of Vx, and places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
+				ram[memoryAddressRegister] = generalPurposeRegisters[instruction >> 8 & 0xF] / 100;
+				ram[memoryAddressRegister + 1] = (generalPurposeRegisters[instruction >> 8 & 0xF] / 10) % 10;
+				ram[memoryAddressRegister + 2] = generalPurposeRegisters[instruction >> 8 & 0xF] % 10;
 				programCounter += 2;
 				break;
 			case 0x55: // Fx55 - The interpreter copies the values of registers V0 through Vx into memory, starting at the address in I.

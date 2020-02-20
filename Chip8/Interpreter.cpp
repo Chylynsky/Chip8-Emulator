@@ -16,19 +16,7 @@ namespace Chip8
 
 	void Interpreter::LoadROM(const std::string& loadPath)
 	{
-#ifndef _DEBUG
 		ram.LoadROM(loadPath);
-#endif
-#ifdef _DEBUG
-		try {
-			ram.LoadROM(loadPath);
-			std::cout << "Rom " + loadPath + " succesfully loaded into RAM." << std::endl;
-		}
-		catch (std::runtime_error & e) {
-			std::cout << e.what() << std::endl;
-			exit(1);
-		}
-#endif
 	}
 
 	void Interpreter::Start()

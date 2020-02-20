@@ -5,6 +5,7 @@
 #include <vector>
 #include <exception>
 #include <stdexcept>
+#include <array>
 #include "ROMLoader.h"
 
 #ifdef _DEBUG
@@ -17,6 +18,7 @@ namespace Chip8
 	class RAM
 	{
 		static constexpr uint16_t MEMORY_CAPACITY{ 4096 };
+		static const std::array<uint8_t, 80> FONTSET;
 
 		std::vector<uint8_t> memory;
 
@@ -25,6 +27,7 @@ namespace Chip8
 		std::mutex ramMutex;
 
 		RAM();
+		~RAM();
 		void LoadROM(const std::string& loadPath);
 
 		RAM& operator=(const RAM&) = delete;

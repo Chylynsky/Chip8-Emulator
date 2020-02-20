@@ -3,6 +3,7 @@
 #include <vector>
 #include <stack>
 #include <mutex>
+#include <random>
 #include "RAM.h"
 #include "Timer.h"
 #include "Counters.h"
@@ -25,11 +26,16 @@ namespace Chip8
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
 
+		// Random numbers generation
+		std::default_random_engine randomEngine;
+		std::uniform_int_distribution<int> Random;
+
 	public:
 
 		std::mutex cpuMutex;
 		
 		CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter);
+		~CPU();
 		void ExecuteCycle();
 		void Reset();
 
