@@ -25,7 +25,9 @@ namespace Chip8
 			switch (instruction & 0xFF)
 			{
 			case 0xE0: // 00E0 - Clear the display.
+#ifdef _DEBUG
 				std::cout << "Clear the display." << std::endl;
+#endif
 				programCounter += 2;
 				break;
 			case 0xEE: // 00EE - The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
