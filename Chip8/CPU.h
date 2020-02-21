@@ -1,11 +1,12 @@
 #pragma once
 #include <cstdint>
-#include <vector>
+#include <array>
 #include <stack>
 #include <mutex>
 #include <random>
+#include <limits>
+#include "GPU.h"
 #include "RAM.h"
-#include "Timer.h"
 #include "Counters.h"
 
 #ifdef _DEBUG
@@ -18,11 +19,12 @@ namespace Chip8
 	{
 		static constexpr uint8_t NUMBER_OF_REGISTERS{ 16 };
 
+		GPU& gpu;
 		RAM& ram;
 		Counter& delayCounter;
 		Counter& soundCounter;
 		std::stack<uint16_t> stack;
-		std::vector<uint8_t> generalPurposeRegisters;
+		std::array<uint8_t, NUMBER_OF_REGISTERS> generalPurposeRegisters;
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
 
@@ -34,7 +36,7 @@ namespace Chip8
 
 		std::mutex cpuMutex;
 		
-		CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter);
+		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter);
 		~CPU();
 		void ExecuteCycle();
 		void Reset();

@@ -9,6 +9,7 @@
 #include "RAM.h"
 #include "Timer.h"
 #include "Counters.h"
+#include "Window.h"
 
 namespace Chip8
 {
@@ -19,14 +20,16 @@ namespace Chip8
 		RAM ram;
 		Counter delayCounter;
 		Counter soundCounter;
+		GPU gpu;
 		CPU cpu;
 		Timer mainClock;
 
 	public:
 
-		Interpreter();
+		Interpreter(Window& window);
 		~Interpreter();
 		void LoadROM(const std::string& loadPath);
+		void AttachCallbackToMainClock(std::function<void(void)> callback);
 		void Start();
 		void Stop();
 		void Reset();

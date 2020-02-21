@@ -2,10 +2,9 @@
 
 namespace Chip8
 {
-	CPU::CPU(RAM& ram, Counter& delayCounter, Counter& soundCounter) : ram{ ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
-		generalPurposeRegisters{ std::vector<uint8_t>(NUMBER_OF_REGISTERS) }, memoryAddressRegister{ 0 }, programCounter{ 0x200 }, Random{ 0, 255 }
+	CPU::CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter) : gpu{ gpu }, ram { ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
+		generalPurposeRegisters{}, memoryAddressRegister{ 0 }, programCounter{ 0x200 }, Random{ std::numeric_limits<uint8_t>::min(), std::numeric_limits<uint8_t>::max() }
 	{
-
 	}
 
 	CPU::~CPU()
@@ -18,6 +17,7 @@ namespace Chip8
 		static uint16_t instruction = 0;
 
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
+		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
 		
 		switch (instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
 		{
@@ -25,9 +25,7 @@ namespace Chip8
 			switch (instruction & 0xFF)
 			{
 			case 0xE0: // 00E0 - Clear the display.
-#ifdef _DEBUG
-				std::cout << "Clear the display." << std::endl;
-#endif
+				gpu.DisplayClear();
 				programCounter += 2;
 				break;
 			case 0xEE: // 00EE - The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
@@ -137,10 +135,14 @@ namespace Chip8
 			generalPurposeRegisters[instruction >> 8 & 0xF] = (instruction & 0xFF) & static_cast<uint8_t>(Random(randomEngine));
 			programCounter += 2;
 			break;
-		case 0xD:
-#ifdef _DEBUG
-			std::cout << "Drawing..." << std::endl;
-#endif
+		case 0xD: // Dxyn - Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+			generalPurposeRegisters[0xF] = gpu.DisplaySprite
+			(
+				generalPurposeRegisters[instruction >> 8 & 0xF], // x
+				generalPurposeRegisters[instruction >> 4 & 0xF],  // y
+				&ram[memoryAddressRegister], // pointer to the first byte
+				&ram[memoryAddressRegister + (instruction & 0xF)] // pointer to the one past last byte
+			);
 			programCounter += 2;
 			break;
 		case 0xE:

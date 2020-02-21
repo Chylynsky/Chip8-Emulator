@@ -162,21 +162,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Counters.cpp" />
     <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="GPU.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RAM.cpp" />
     <ClCompile Include="ROMLoader.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Counters.h" />
     <ClInclude Include="CPU.h" />
+    <ClInclude Include="GPU.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="RAM.h" />
     <ClInclude Include="ROMLoader.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

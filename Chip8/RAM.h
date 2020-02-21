@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <mutex>
-#include <vector>
+#include <array>
 #include <exception>
 #include <stdexcept>
 #include <array>
@@ -20,7 +20,7 @@ namespace Chip8
 		static constexpr uint16_t MEMORY_CAPACITY{ 4096 };
 		static const std::array<uint8_t, 80> FONTSET;
 
-		std::vector<uint8_t> memory;
+		std::array<uint8_t, MEMORY_CAPACITY> memory;
 
 	public:
 

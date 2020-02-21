@@ -2,7 +2,7 @@
 
 namespace Chip8
 {
-	Interpreter::Interpreter() : ram{}, delayCounter{}, soundCounter{}, cpu{ ram, delayCounter, soundCounter }, mainClock{ PERIOD }
+	Interpreter::Interpreter(Window& window) : ram{}, delayCounter{}, soundCounter{}, gpu{ window }, cpu{ gpu, ram, delayCounter, soundCounter }, mainClock{ PERIOD }
 	{
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &delayCounter));
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &soundCounter));
@@ -19,6 +19,11 @@ namespace Chip8
 		ram.LoadROM(loadPath);
 	}
 
+	void Interpreter::AttachCallbackToMainClock(std::function<void(void)> callback)
+	{
+		mainClock.AttachCallback(callback);
+	}
+
 	void Interpreter::Start()
 	{
 		mainClock.Start();
@@ -33,6 +38,7 @@ namespace Chip8
 	{
 		mainClock.Stop();
 		cpu.Reset();
+		gpu.DisplayClear();
 		mainClock.Start();
 	}
 }

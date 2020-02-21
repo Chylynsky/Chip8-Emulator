@@ -22,7 +22,7 @@ namespace Chip8
 		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	};
 
-	RAM::RAM() : memory{ std::vector<uint8_t>(MEMORY_CAPACITY) }
+	RAM::RAM() : memory{}
 	{
 		// Fill RAM memory with font data
 		std::copy(FONTSET.begin(), FONTSET.end(), memory.begin());
@@ -47,7 +47,6 @@ namespace Chip8
 
 	uint8_t& RAM::operator[](uint16_t address)
 	{
-		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		return memory[address];
 	}
 
