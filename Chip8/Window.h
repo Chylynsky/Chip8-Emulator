@@ -2,6 +2,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <queue>
 #include <exception>
 #include <stdexcept>
 #include "SDL.h"
@@ -12,12 +13,18 @@ namespace Chip8
 	{
 		SDL_Window* window;
 		SDL_Renderer* renderer;
+		std::queue<SDL_Rect*> textures;
 
 	public:
 
-		Window(const std::string& title, int width, int height);
+		int Width;
+		int Height;
+
+		Window(const std::string& title);
 		~Window();
 
+		void AddToRenderQueue(SDL_Rect* texture);
+		void Refresh();
 		void RunEventLoop();
 	};
 }

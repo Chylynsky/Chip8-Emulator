@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <array>
+#include <SDL.h>
 #include "Window.h"
 
 namespace Chip8
@@ -10,6 +11,9 @@ namespace Chip8
 		// Original resolution is 64x32 pixels
 		std::array<std::array<uint8_t, 32>, 64> display;
 		Window& window;
+		int renderScale;
+		
+		void DisplayCurrent();
 
 	public:
 

@@ -19,7 +19,6 @@ namespace Chip8
 
 		template<typename iter>
 		void Load(iter where);
-		std::ifstream& operator>>(uint8_t& value);
 	};
 
 	template<typename iter>

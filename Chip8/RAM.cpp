@@ -35,12 +35,6 @@ namespace Chip8
 	void RAM::LoadROM(const std::string& loadPath)
 	{
 		ROMLoader loader{ loadPath }; // May throw
-
-		/*int address = 0x200; // Start at memory address of 0x200
-		std::lock_guard<std::mutex> ramGuard{ ramMutex };
-		while (loader >> memory[address])
-			address++;*/
-
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		loader.Load(memory.begin() + 0x200);
 	}

@@ -2,7 +2,24 @@
 
 namespace Chip8
 {
-	GPU::GPU(Window& window) : display{}, window { window }
+	void GPU::DisplayCurrent()
+	{
+		for (int i = 0; i < display.size(); i++)
+		{
+			for (int j = 0; j < display[i].size(); j++)
+			{
+				if (display[i][j] == 1)
+				{
+					SDL_Rect rect{ i * renderScale, j * renderScale, renderScale, renderScale };
+					window.AddToRenderQueue(&rect);
+				}
+			}
+		}
+
+		window.Refresh();
+	}
+
+	GPU::GPU(Window& window) : display{}, window{ window }, renderScale{ window.Width / 64 }
 	{
 	}
 
@@ -30,15 +47,18 @@ namespace Chip8
 			y++;
 		}
 
+		DisplayCurrent();
 		return result;
 	}
 
 	void GPU::DisplayClear()
 	{
-		for (std::array<uint8_t, 32> row : display)
+		for (size_t i = 0; i < display.size(); i++)
 		{
-			for (uint8_t elem : row)
-				elem = 0;
+			for (size_t j = 0; j < display[i].size(); j++)
+			{
+				display[i][j] = 0;
+			}
 		}
 	}
 }

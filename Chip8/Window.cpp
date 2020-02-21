@@ -2,13 +2,13 @@
 
 namespace Chip8
 {
-	Window::Window(const std::string& title, int width, int height)
+	Window::Window(const std::string& title)
 	{
 		if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
 			throw std::runtime_error("Could not initialize window.");
 		else
 		{
-			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_MAXIMIZED);
 
 			if (!window)
 				throw std::runtime_error("An error occured while creating the window.");
@@ -18,6 +18,8 @@ namespace Chip8
 
 				if (!renderer)
 					throw std::runtime_error("An error occured while creating the renderer.");
+
+				SDL_GetWindowSize(window, &Width, &Height);
 			}
 		}
 	}
@@ -29,6 +31,26 @@ namespace Chip8
 		SDL_DestroyWindow(window);
 		window = nullptr;
 		SDL_Quit();
+	}
+
+	void Window::AddToRenderQueue(SDL_Rect* texture)
+	{
+		textures.push(texture);
+	}
+
+	void Window::Refresh()
+	{
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+		while (textures.size() > 0)
+		{
+			SDL_RenderFillRect(renderer, textures.front());
+			textures.pop();
+		}
+
+		SDL_RenderPresent(renderer);
 	}
 
 	void Window::RunEventLoop()
@@ -45,7 +67,7 @@ namespace Chip8
 				}
 			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
 		}
 	}
 }
