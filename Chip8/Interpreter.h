@@ -33,8 +33,5 @@ namespace Chip8
 		void Start();
 		void Stop();
 		void Reset();
-
-		Interpreter& operator=(const Interpreter&) = delete;
-		Interpreter& operator=(Interpreter&&) = delete;
 	};
 }

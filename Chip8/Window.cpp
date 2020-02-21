@@ -33,6 +33,11 @@ namespace Chip8
 		SDL_Quit();
 	}
 
+	void Window::ShowErrorBox(const std::string& message)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", message.c_str(), nullptr);
+	}
+
 	void Window::AddToRenderQueue(SDL_Rect* texture)
 	{
 		textures.push(texture);

@@ -1,5 +1,12 @@
 #pragma once
+#include <exception>
+#include <stdexcept>
+#include "Window.h"
 #include "Interpreter.h"
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
 
 namespace Chip8
 {

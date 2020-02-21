@@ -23,6 +23,8 @@ namespace Chip8
 		Window(const std::string& title);
 		~Window();
 
+		static void ShowErrorBox(const std::string& message);
+
 		void AddToRenderQueue(SDL_Rect* texture);
 		void Refresh();
 		void RunEventLoop();
