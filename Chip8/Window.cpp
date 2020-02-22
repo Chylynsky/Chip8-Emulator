@@ -2,10 +2,10 @@
 
 namespace Chip8
 {
-	Window::Window(const std::string& title)
-	{
+	Window::Window(const std::string& title) : title{ title }, keepWindowOpen{ true }
+	{  
 		if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
-			throw std::runtime_error("Could not initialize window.");
+			throw std::runtime_error("Could not initialize SDL2 library.");
 		else
 		{
 			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_MAXIMIZED);
@@ -58,21 +58,76 @@ namespace Chip8
 		SDL_RenderPresent(renderer);
 	}
 
-	void Window::RunEventLoop()
+	void Window::PollEvents()
 	{
 		SDL_Event e;
 
-		while (true)
+		while (SDL_PollEvent(&e) != 0)
 		{
-			while (SDL_PollEvent(&e) != 0)
+			if (e.type == SDL_QUIT)
 			{
-				if (e.type == SDL_QUIT)
-				{
-					return;
-				}
+				keepWindowOpen = false;
 			}
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(20));
 		}
 	}
+
+	void Window::Maximize()
+	{
+		SDL_MaximizeWindow(window);
+	}
+
+	void Window::Minimize()
+	{
+		SDL_MinimizeWindow(window);
+	}
+
+	bool Window::KeepWindowOpen()
+	{
+		return keepWindowOpen;
+	}
+
+#ifdef _WIN32
+	OpenFileDialog::OpenFileDialog() : filePath{ nullptr }, hr{ 0 }, dialog{ nullptr }, selectedItem{ nullptr }
+	{
+		hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+		if (SUCCEEDED(hr))
+		{
+			hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&dialog));
+
+			if (SUCCEEDED(hr))
+			{
+				hr = dialog->Show(nullptr);
+
+				if (SUCCEEDED(hr))
+				{
+					hr = dialog->GetResult(&selectedItem);
+
+					if (SUCCEEDED(hr))
+					{
+						selectedItem->GetDisplayName(SIGDN_FILESYSPATH, &filePath);
+					}
+					else
+						throw std::runtime_error("An error occured while getting results from file dialog.");
+				}
+				else
+					throw std::runtime_error("No file was selected. Application will close.");
+			}
+		}
+	}
+
+	OpenFileDialog::~OpenFileDialog()
+	{
+		selectedItem->Release();
+		dialog->Release();
+		CoUninitialize();
+	}
+
+	std::wstring OpenFileDialog::GetFilePath()
+	{
+		if (!filePath)
+			return std::wstring();
+		else
+			return filePath;
+	}
+#endif
 }

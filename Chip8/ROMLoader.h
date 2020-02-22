@@ -15,6 +15,7 @@ namespace Chip8
 	public:
 
 		ROMLoader(std::string loadPath);
+		ROMLoader(std::wstring loadPath);
 		~ROMLoader();
 
 		template<typename iter>

@@ -10,6 +10,14 @@ namespace Chip8
 			throw std::runtime_error("File " + loadPath + " could not be opened.");
 	}
 
+	ROMLoader::ROMLoader(std::wstring loadPath)
+	{
+		file.open(loadPath, std::ios::binary);
+
+		if (!file.is_open())
+			throw std::runtime_error("File could not be opened.");
+	}
+
 	ROMLoader::~ROMLoader()
 	{
 		file.close();

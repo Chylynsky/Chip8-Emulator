@@ -4,18 +4,7 @@ namespace Chip8
 {
 	Application::Application() : window{ "Chip 8 Emulator" }, interpreter{ window }
 	{
-		try {
-			interpreter.LoadROM("roms/test1.ch8");
-		}
-		catch (std::runtime_error & e)
-		{
-			Window::ShowErrorBox(e.what());
-			exit(1);
-		}
-		catch (std::out_of_range & e) {
-			Window::ShowErrorBox(e.what());
-			exit(1);
-		}
+		window.Minimize();
 	}
 
 	Application::~Application()
@@ -25,7 +14,42 @@ namespace Chip8
 
 	void Application::Run()
 	{
-		interpreter.Start();
-		window.RunEventLoop();
+		window.Refresh();
+
+		try {
+#ifdef _WIN32
+			OpenFileDialog dialog;
+			interpreter.LoadROM(dialog.GetFilePath());
+#else
+			std::string loadPath;
+			std::cout << "Enter Chip 8 ROM file path: "
+			std::cin >> loadPath;
+			interpreter.LoadROM(loadPath);
+			std::cout << std::endl;
+#endif
+			interpreter.Start();
+			window.Maximize();
+		}
+		catch (std::runtime_error & e)
+		{
+#ifdef _DEBUG
+			std::cerr << e.what() << std::endl;
+#endif
+			Window::ShowErrorBox(e.what());
+			exit(1);
+		}
+		catch (std::out_of_range & e) {
+#ifdef _DEBUG
+			std::cerr << e.what() << std::endl;
+#endif
+			Window::ShowErrorBox(e.what());
+			exit(1);
+		}
+
+		while (window.KeepWindowOpen())
+		{
+			window.PollEvents();
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		}
 	}
 }

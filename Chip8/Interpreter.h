@@ -29,6 +29,7 @@ namespace Chip8
 		Interpreter(Window& window);
 		~Interpreter();
 		void LoadROM(const std::string& loadPath);
+		void LoadROM(const std::wstring& loadPath);
 		void AttachCallbackToMainClock(std::function<void(void)> callback);
 		void Start();
 		void Stop();

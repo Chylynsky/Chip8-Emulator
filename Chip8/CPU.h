@@ -13,6 +13,9 @@
 #include <iostream>
 #endif
 
+#undef min
+#undef max
+
 namespace Chip8
 {
 	class CPU

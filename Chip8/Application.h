@@ -1,6 +1,7 @@
 #pragma once
 #include <exception>
 #include <stdexcept>
+#include <string>
 #include "Window.h"
 #include "Interpreter.h"
 

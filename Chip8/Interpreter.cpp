@@ -16,15 +16,12 @@ namespace Chip8
 
 	void Interpreter::LoadROM(const std::string& loadPath)
 	{
-		try {
-			ram.LoadROM(loadPath);
-		}
-		catch (std::runtime_error&) {
-			throw;
-		}
-		catch (std::out_of_range&) {
-			throw;
-		}
+		ram.LoadROM(loadPath);
+	}
+
+	void Interpreter::LoadROM(const std::wstring& loadPath)
+	{
+		ram.LoadROM(loadPath);
 	}
 
 	void Interpreter::AttachCallbackToMainClock(std::function<void(void)> callback)
