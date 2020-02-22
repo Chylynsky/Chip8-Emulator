@@ -5,6 +5,7 @@
 #include <mutex>
 #include <random>
 #include <limits>
+#include <sstream>
 #include "GPU.h"
 #include "RAM.h"
 #include "Counters.h"

@@ -34,10 +34,12 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			default: 
+				std::stringstream sstr;
+				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
+				std::cout << sstr.str() << std::endl;
 #endif
-				programCounter += 2;
+				throw std::runtime_error(sstr.str());
 				break;
 			}
 			break;
@@ -113,10 +115,12 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			default:
+				std::stringstream sstr;
+				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
+				std::cout << sstr.str() << std::endl;
 #endif
-				programCounter += 2;
+				throw std::runtime_error(sstr.str());
 				break;
 			}
 			break;
@@ -146,11 +150,37 @@ namespace Chip8
 			programCounter += 2;
 			break;
 		case 0xE:
+			switch (instruction & 0xFF)
+			{
+			case 0x9E: // Ex9E - Skip next instruction if key with the value of Vx is pressed.
+			{
+				std::cout << "Keyboard input required: ";
+				uint8_t key = 0;
+				std::cin >> key;
+				std::cout << std::endl;
+				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == key) ? 2 : 0;
+				programCounter += 2;
+			}
+				break;
+			case 0xA1: // ExA1 - Skip next instruction if key with the value of Vx is not pressed.
+			{
+				std::cout << "Keyboard input required: ";
+				uint8_t key = 0;
+				std::cin >> key;
+				std::cout << std::endl;
+				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != key) ? 2 : 0;
+				programCounter += 2;
+			}
+				break;
+			default:
+				std::stringstream sstr;
+				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-			std::cout << "Keyboard input required: " << std::endl;
-			std::cin.get();
+				std::cout << sstr.str() << std::endl;
 #endif
-			programCounter += 2;
+				throw std::runtime_error(sstr.str());
+				break;
+			}
 			break;
 		case 0xF:
 			switch (instruction & 0xFF)
@@ -159,11 +189,14 @@ namespace Chip8
 				generalPurposeRegisters[instruction >> 8 & 0xF] = delayCounter.GetValue();
 				programCounter += 2;
 				break;
-			case 0x0A:
-#ifdef _DEBUG
-				std::cout << "Keyboard input required: " << std::endl;
-				std::cin.get();
-#endif
+			case 0x0A: // Fx0A - Wait for a key press, store the value of the key in Vx.
+			{
+				std::cout << "Keyboard input required: ";
+				uint8_t key = 0;
+				std::cin >> key;
+				std::cout << std::endl;
+				generalPurposeRegisters[instruction >> 8 & 0xF] = key;
+			}
 				programCounter += 2;
 				break;
 			case 0x15: // Fx15 - DT is set equal to the value of Vx.
@@ -178,7 +211,8 @@ namespace Chip8
 				memoryAddressRegister += generalPurposeRegisters[instruction >> 0x8 & 0xF];
 				programCounter += 2;
 				break;
-			case 0x29:
+			case 0x29: // Fx29 - The value of I is set to the location for the hexadecimal sprite corresponding to the value of Vx.
+				memoryAddressRegister = 4 * (instruction >> 8 & 0xF);
 				programCounter += 2;
 				break;
 			case 0x33: // Fx33 - The interpreter takes the decimal value of Vx, and places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
@@ -198,18 +232,22 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			default:
+				std::stringstream sstr;
+				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
+				std::cout << sstr.str() << std::endl;
 #endif
-				programCounter += 2;
+				throw std::runtime_error(sstr.str());
 				break;
 			}
 			break;
 		default:
+			std::stringstream sstr;
+			sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-			std::cout << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ")." << std::endl;
+			std::cout << sstr.str() << std::endl;
 #endif
-			programCounter += 2;
+			throw std::runtime_error(sstr.str());
 			break;
 		}
 	}

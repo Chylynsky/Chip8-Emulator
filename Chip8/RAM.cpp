@@ -25,7 +25,7 @@ namespace Chip8
 	RAM::RAM() : memory{}
 	{
 		// Fill RAM memory with font data
-		std::copy(FONTSET.begin(), FONTSET.end(), memory.begin());
+		std::copy(FONTSET.begin(), FONTSET.end(), memory.begin() + FONTSET_ADDRESS);
 	}
 
 	RAM::~RAM()

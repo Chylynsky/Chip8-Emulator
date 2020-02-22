@@ -11,7 +11,7 @@ namespace Chip8
 				if (display[i][j] == 1)
 				{
 					SDL_Rect rect{ i * renderScale, j * renderScale, renderScale, renderScale };
-					window.AddToRenderQueue(&rect);
+					window.AddToRenderQueue(rect);
 				}
 			}
 		}
@@ -60,5 +60,7 @@ namespace Chip8
 				display[i][j] = 0;
 			}
 		}
+
+		window.Refresh();
 	}
 }

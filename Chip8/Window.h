@@ -18,7 +18,7 @@ namespace Chip8
 	{
 		SDL_Window* window;
 		SDL_Renderer* renderer;
-		std::queue<SDL_Rect*> textures;
+		std::queue<SDL_Rect> textures;
 		std::string title;
 		bool keepWindowOpen;
 
@@ -32,7 +32,7 @@ namespace Chip8
 
 		static void ShowErrorBox(const std::string& message);
 
-		void AddToRenderQueue(SDL_Rect* texture);
+		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
 		void PollEvents();
 		void Maximize();

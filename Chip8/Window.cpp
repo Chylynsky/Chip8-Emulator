@@ -38,7 +38,7 @@ namespace Chip8
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", message.c_str(), nullptr);
 	}
 
-	void Window::AddToRenderQueue(SDL_Rect* texture)
+	void Window::AddToRenderQueue(SDL_Rect texture)
 	{
 		textures.push(texture);
 	}
@@ -51,7 +51,7 @@ namespace Chip8
 
 		while (textures.size() > 0)
 		{
-			SDL_RenderFillRect(renderer, textures.front());
+			SDL_RenderFillRect(renderer, &textures.front());
 			textures.pop();
 		}
 
