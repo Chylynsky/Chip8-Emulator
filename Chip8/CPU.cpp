@@ -11,15 +11,13 @@ namespace Chip8
 	{
 	}
 
-	// Comments in CPU::Execute method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
+	// Comments in CPU::ExecuteCycle method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
 	void CPU::ExecuteCycle()
 	{
-		static uint16_t instruction = 0;
-
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
 		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
 		
-		switch (instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
+		switch (uint16_t instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
 		{
 		case 0x0:
 			switch (instruction & 0xFF)
@@ -155,7 +153,7 @@ namespace Chip8
 			case 0x9E: // Ex9E - Skip next instruction if key with the value of Vx is pressed.
 			{
 				std::cout << "Keyboard input required: ";
-				uint8_t key = 0;
+				uint16_t key = 0;
 				std::cin >> key;
 				std::cout << std::endl;
 				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == key) ? 2 : 0;
@@ -165,7 +163,7 @@ namespace Chip8
 			case 0xA1: // ExA1 - Skip next instruction if key with the value of Vx is not pressed.
 			{
 				std::cout << "Keyboard input required: ";
-				uint8_t key = 0;
+				uint16_t key = 0;
 				std::cin >> key;
 				std::cout << std::endl;
 				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != key) ? 2 : 0;
@@ -192,7 +190,7 @@ namespace Chip8
 			case 0x0A: // Fx0A - Wait for a key press, store the value of the key in Vx.
 			{
 				std::cout << "Keyboard input required: ";
-				uint8_t key = 0;
+				uint16_t key = 0;
 				std::cin >> key;
 				std::cout << std::endl;
 				generalPurposeRegisters[instruction >> 8 & 0xF] = key;

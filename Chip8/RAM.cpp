@@ -36,14 +36,14 @@ namespace Chip8
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		ROMLoader loader{ loadPath };
-		loader.Load(memory.begin() + 0x200, memory.end());
+		loader.Load(memory.begin() + PROGRAM_MEMORY_ADDRESS, memory.end());
 	}
 
 	void RAM::LoadROM(const std::wstring& loadPath)
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		ROMLoader loader{ loadPath };
-		loader.Load(memory.begin() + 0x200, memory.end());
+		loader.Load(memory.begin() + PROGRAM_MEMORY_ADDRESS, memory.end());
 	}
 
 	uint8_t& RAM::operator[](uint16_t address)

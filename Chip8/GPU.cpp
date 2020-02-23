@@ -33,18 +33,21 @@ namespace Chip8
 
 		while (first != last)
 		{
-			for (size_t shift = 0; shift < sizeof(uint8_t); shift++)
+			uint8_t xPos = x;
+			for (size_t shift = 0; shift < 8; shift++)
 			{
-				tmp = display[x + shift][y];
-				display[x + shift][y] ^= (*first >> (sizeof(uint8_t) - shift));
+				tmp = display[xPos][y];
+				display[xPos][y] ^= (*first >> (8 - shift - 1) & 0xF);
 
 				// Result is 1 if any pixel turns from 1 to 0
-				if (tmp == 1 && display[x + shift][y] == 0)
+				if (tmp == 1 && display[xPos][y] == 0)
 					result = 1;
+
+				xPos = (xPos < display.size() - 1) ? xPos + 1 : 0;
 			}
 
 			first++;
-			y++;
+			y = (y < display[0].size() - 1) ? y + 1 : 0;
 		}
 
 		DisplayCurrent();
