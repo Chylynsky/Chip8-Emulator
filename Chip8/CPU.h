@@ -31,18 +31,20 @@ namespace Chip8
 		std::array<uint8_t, NUMBER_OF_REGISTERS> generalPurposeRegisters;
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
+		uint8_t pressedKeyCode;
 
 		// Random numbers generation
 		std::default_random_engine randomEngine;
 		std::uniform_int_distribution<int> Random;
 
-	public:
-
 		std::mutex cpuMutex;
+
+	public:
 		
 		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter);
 		~CPU();
 		void ExecuteCycle();
+		void UpdatePressedKeyCode(uint8_t pressedKeyCode);
 		void Reset();
 
 		CPU& operator=(const CPU&) = delete;

@@ -3,7 +3,7 @@
 namespace Chip8
 {
 	CPU::CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter) : gpu{ gpu }, ram { ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
-		generalPurposeRegisters{}, memoryAddressRegister{ 0 }, programCounter{ 0x200 }, Random{ std::numeric_limits<uint8_t>::min(), std::numeric_limits<uint8_t>::max() }
+		generalPurposeRegisters{}, memoryAddressRegister{ 0 }, programCounter{ RAM::PROGRAM_MEMORY_ADDRESS }, pressedKeyCode{ 0x0 }, Random{ 0x00, 0xFF }
 	{
 	}
 
@@ -151,24 +151,12 @@ namespace Chip8
 			switch (instruction & 0xFF)
 			{
 			case 0x9E: // Ex9E - Skip next instruction if key with the value of Vx is pressed.
-			{
-				std::cout << "Keyboard input required: ";
-				uint16_t key = 0;
-				std::cin >> key;
-				std::cout << std::endl;
-				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == key) ? 2 : 0;
+				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == pressedKeyCode) ? 2 : 0;
 				programCounter += 2;
-			}
 				break;
 			case 0xA1: // ExA1 - Skip next instruction if key with the value of Vx is not pressed.
-			{
-				std::cout << "Keyboard input required: ";
-				uint16_t key = 0;
-				std::cin >> key;
-				std::cout << std::endl;
-				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != key) ? 2 : 0;
+				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != pressedKeyCode) ? 2 : 0;
 				programCounter += 2;
-			}
 				break;
 			default:
 				std::stringstream sstr;
@@ -188,13 +176,7 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x0A: // Fx0A - Wait for a key press, store the value of the key in Vx.
-			{
-				std::cout << "Keyboard input required: ";
-				uint16_t key = 0;
-				std::cin >> key;
-				std::cout << std::endl;
-				generalPurposeRegisters[instruction >> 8 & 0xF] = key;
-			}
+				generalPurposeRegisters[instruction >> 8 & 0xF] = pressedKeyCode;
 				programCounter += 2;
 				break;
 			case 0x15: // Fx15 - DT is set equal to the value of Vx.
@@ -214,19 +196,28 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x33: // Fx33 - The interpreter takes the decimal value of Vx, and places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
-				ram[memoryAddressRegister] = generalPurposeRegisters[instruction >> 8 & 0xF] / 100;
-				ram[memoryAddressRegister + 1] = (generalPurposeRegisters[instruction >> 8 & 0xF] / 10) % 10;
-				ram[memoryAddressRegister + 2] = generalPurposeRegisters[instruction >> 8 & 0xF] % 10;
+			{
+				uint8_t regNum = instruction >> 8 & 0xF;
+				ram[memoryAddressRegister] = generalPurposeRegisters[regNum] / 100;
+				ram[memoryAddressRegister + 1] = (generalPurposeRegisters[regNum] / 10) % 10;
+				ram[memoryAddressRegister + 2] = generalPurposeRegisters[regNum] % 10;
+			}
 				programCounter += 2;
 				break;
 			case 0x55: // Fx55 - The interpreter copies the values of registers V0 through Vx into memory, starting at the address in I.
-				for (uint8_t i = 0; i < (instruction >> 0x8 & 0xF); i++)
+			{
+				uint8_t regNum = instruction >> 8 & 0xF;
+				for (uint8_t i = 0; i < regNum; i++)
 					ram[memoryAddressRegister + i] = generalPurposeRegisters[i];
+			}
 				programCounter += 2;
 				break;
 			case 0x65: // Fx65 - The interpreter reads values from memory starting at location I into registers V0 through Vx.
-				for (uint8_t i = 0; i < (instruction >> 0x8 & 0xF); i++)
+			{
+				uint8_t regNum = instruction >> 8 & 0xF;
+				for (uint8_t i = 0; i < regNum; i++)
 					generalPurposeRegisters[i] = ram[memoryAddressRegister + i];
+			}
 				programCounter += 2;
 				break;
 			default:
@@ -248,6 +239,12 @@ namespace Chip8
 			throw std::runtime_error(sstr.str());
 			break;
 		}
+	}
+
+	void CPU::UpdatePressedKeyCode(uint8_t pressedKeyCode)
+	{
+		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
+		this->pressedKeyCode = pressedKeyCode;
 	}
 
 	void CPU::Reset()

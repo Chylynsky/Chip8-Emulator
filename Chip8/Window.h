@@ -1,8 +1,10 @@
 #pragma once
+#include <cstdint>
 #include <string>
 #include <thread>
 #include <chrono>
 #include <queue>
+#include <mutex>
 #include <exception>
 #include <stdexcept>
 #include "SDL.h"
@@ -21,6 +23,8 @@ namespace Chip8
 		std::queue<SDL_Rect> textures;
 		std::string title;
 		bool keepWindowOpen;
+		uint8_t pressedKeyCode;
+		std::mutex windowMutex;
 
 	public:
 
@@ -32,6 +36,7 @@ namespace Chip8
 
 		static void ShowErrorBox(const std::string& message);
 
+		uint8_t GetPressedKeyCode();
 		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
 		void PollEvents();

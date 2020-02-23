@@ -31,6 +31,7 @@ namespace Chip8
 		void LoadROM(const std::string& loadPath);
 		void LoadROM(const std::wstring& loadPath);
 		void AttachCallbackToMainClock(std::function<void(void)> callback);
+		void HandleKeyPressed(uint8_t pressedKeyCode);
 		void Start();
 		void Stop();
 		void Reset();

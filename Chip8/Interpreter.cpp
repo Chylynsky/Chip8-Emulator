@@ -29,6 +29,11 @@ namespace Chip8
 		mainClock.AttachCallback(callback);
 	}
 
+	void Interpreter::HandleKeyPressed(uint8_t pressedKeyCode)
+	{
+		cpu.UpdatePressedKeyCode(pressedKeyCode);
+	}
+
 	void Interpreter::Start()
 	{
 		mainClock.Start();
