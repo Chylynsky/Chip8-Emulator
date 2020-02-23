@@ -2,7 +2,8 @@
 
 namespace Chip8
 {
-	Interpreter::Interpreter(Window& window) : ram{}, delayCounter{}, soundCounter{}, gpu{ window }, cpu{ gpu, ram, delayCounter, soundCounter }, mainClock{ PERIOD }
+	Interpreter::Interpreter(Window& window, KeyboardHandler& keyboardHandler) : ram{}, delayCounter{}, soundCounter{}, gpu{ window }, 
+		cpu{ gpu, ram, delayCounter, soundCounter, keyboardHandler }, mainClock{ PERIOD }, keyboardHandler{ keyboardHandler }
 	{
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &delayCounter));
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &soundCounter));
@@ -22,16 +23,6 @@ namespace Chip8
 	void Interpreter::LoadROM(const std::wstring& loadPath)
 	{
 		ram.LoadROM(loadPath);
-	}
-
-	void Interpreter::AttachCallbackToMainClock(std::function<void(void)> callback)
-	{
-		mainClock.AttachCallback(callback);
-	}
-
-	void Interpreter::HandleKeyPressed(uint8_t pressedKeyCode)
-	{
-		cpu.UpdatePressedKeyCode(pressedKeyCode);
 	}
 
 	void Interpreter::Start()

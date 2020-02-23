@@ -9,6 +9,7 @@
 #include "GPU.h"
 #include "RAM.h"
 #include "Counters.h"
+#include "KeyboardHandler.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -27,11 +28,11 @@ namespace Chip8
 		RAM& ram;
 		Counter& delayCounter;
 		Counter& soundCounter;
+		KeyboardHandler& keyboardHandler;
 		std::stack<uint16_t> stack;
 		std::array<uint8_t, NUMBER_OF_REGISTERS> generalPurposeRegisters;
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
-		uint8_t pressedKeyCode;
 
 		// Random numbers generation
 		std::default_random_engine randomEngine;
@@ -41,10 +42,9 @@ namespace Chip8
 
 	public:
 		
-		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter);
+		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter, KeyboardHandler& keyboardHandler);
 		~CPU();
 		void ExecuteCycle();
-		void UpdatePressedKeyCode(uint8_t pressedKeyCode);
 		void Reset();
 
 		CPU& operator=(const CPU&) = delete;

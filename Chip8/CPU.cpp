@@ -2,8 +2,8 @@
 
 namespace Chip8
 {
-	CPU::CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter) : gpu{ gpu }, ram { ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
-		generalPurposeRegisters{}, memoryAddressRegister{ 0 }, programCounter{ RAM::PROGRAM_MEMORY_ADDRESS }, pressedKeyCode{ 0x0 }, Random{ 0x00, 0xFF }
+	CPU::CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter, KeyboardHandler& keyboardHandler) : gpu{ gpu }, ram { ram }, delayCounter{ delayCounter }, soundCounter{ soundCounter },
+		keyboardHandler{ keyboardHandler }, generalPurposeRegisters{}, memoryAddressRegister{ 0 }, programCounter{ RAM::PROGRAM_MEMORY_ADDRESS }, Random{ 0x00, 0xFF }
 	{
 	}
 
@@ -151,11 +151,17 @@ namespace Chip8
 			switch (instruction & 0xFF)
 			{
 			case 0x9E: // Ex9E - Skip next instruction if key with the value of Vx is pressed.
-				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == pressedKeyCode) ? 2 : 0;
+				if (keyboardHandler.IsAnyKeyPressed())
+				{
+					programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] == keyboardHandler.GetPressedKeyCode()) ? 2 : 0;
+				}
 				programCounter += 2;
 				break;
 			case 0xA1: // ExA1 - Skip next instruction if key with the value of Vx is not pressed.
-				programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != pressedKeyCode) ? 2 : 0;
+				if (keyboardHandler.IsAnyKeyPressed())
+				{
+					programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != keyboardHandler.GetPressedKeyCode()) ? 2 : 0;
+				}
 				programCounter += 2;
 				break;
 			default:
@@ -176,8 +182,11 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x0A: // Fx0A - Wait for a key press, store the value of the key in Vx.
-				generalPurposeRegisters[instruction >> 8 & 0xF] = pressedKeyCode;
-				programCounter += 2;
+				if (keyboardHandler.IsAnyKeyPressed())
+				{
+					generalPurposeRegisters[instruction >> 8 & 0xF] = keyboardHandler.GetPressedKeyCode();
+					programCounter += 2;
+				}
 				break;
 			case 0x15: // Fx15 - DT is set equal to the value of Vx.
 				delayCounter.SetValue(generalPurposeRegisters[instruction >> 8 & 0xF]);
@@ -239,12 +248,6 @@ namespace Chip8
 			throw std::runtime_error(sstr.str());
 			break;
 		}
-	}
-
-	void CPU::UpdatePressedKeyCode(uint8_t pressedKeyCode)
-	{
-		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
-		this->pressedKeyCode = pressedKeyCode;
 	}
 
 	void CPU::Reset()

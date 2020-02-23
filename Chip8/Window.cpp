@@ -2,7 +2,7 @@
 
 namespace Chip8
 {
-	Window::Window(const std::string& title) : title{ title }, keepWindowOpen{ true }, pressedKeyCode{ 0x0 }
+	Window::Window(const std::string& title) : keepWindowOpen{ true }
 	{  
 		if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
 			throw std::runtime_error("Could not initialize SDL2 library.");
@@ -14,7 +14,7 @@ namespace Chip8
 				throw std::runtime_error("An error occured while creating the window.");
 			else
 			{
-				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+				renderer = SDL_CreateRenderer(window, -1, NULL);
 
 				if (!renderer)
 					throw std::runtime_error("An error occured while creating the renderer.");
@@ -38,12 +38,6 @@ namespace Chip8
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", message.c_str(), nullptr);
 	}
 
-	uint8_t Window::GetPressedKeyCode()
-	{
-		std::lock_guard<std::mutex> windowMutexGuard{ windowMutex };
-		return pressedKeyCode;
-	}
-
 	void Window::AddToRenderQueue(SDL_Rect texture)
 	{
 		textures.push(texture);
@@ -64,12 +58,10 @@ namespace Chip8
 		SDL_RenderPresent(renderer);
 	}
 
-	void Window::PollEvents()
+	void Window::PollEvents(KeyboardHandler& keyboardHandler)
 	{
 		SDL_Event e;
-
-		std::lock_guard<std::mutex> windowMutexGuard{ windowMutex };
-		pressedKeyCode = 0x0;
+		keyboardHandler.NoKeyPressed();
 
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -82,52 +74,52 @@ namespace Chip8
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_0:
-					pressedKeyCode = 0x0;
+					keyboardHandler.KeyPressed(0x0);
 					break;
 				case SDLK_1:
-					pressedKeyCode = 0x1;
+					keyboardHandler.KeyPressed(0x1);
 					break;
 				case SDLK_2:
-					pressedKeyCode = 0x2;
+					keyboardHandler.KeyPressed(0x2);
 					break;
 				case SDLK_3:
-					pressedKeyCode = 0x3;
+					keyboardHandler.KeyPressed(0x3);
 					break;
 				case SDLK_4:
-					pressedKeyCode = 0x4;
+					keyboardHandler.KeyPressed(0x4);
 					break;
 				case SDLK_5:
-					pressedKeyCode = 0x5;
+					keyboardHandler.KeyPressed(0x5);
 					break;
 				case SDLK_6:
-					pressedKeyCode = 0x6;
+					keyboardHandler.KeyPressed(0x6);
 					break;
 				case SDLK_7:
-					pressedKeyCode = 0x7;
+					keyboardHandler.KeyPressed(0x7);
 					break;
 				case SDLK_8:
-					pressedKeyCode = 0x8;
+					keyboardHandler.KeyPressed(0x8);
 					break;
 				case SDLK_9:
-					pressedKeyCode = 0x9;
+					keyboardHandler.KeyPressed(0x9);
 					break;
 				case SDLK_a:
-					pressedKeyCode = 0xA;
+					keyboardHandler.KeyPressed(0xA);
 					break;
 				case SDLK_b:
-					pressedKeyCode = 0xB;
+					keyboardHandler.KeyPressed(0xB);
 					break;
 				case SDLK_c:
-					pressedKeyCode = 0xC;
+					keyboardHandler.KeyPressed(0xC);
 					break;
 				case SDLK_d:
-					pressedKeyCode = 0xD;
+					keyboardHandler.KeyPressed(0xD);
 					break;
 				case SDLK_e:
-					pressedKeyCode = 0xE;
+					keyboardHandler.KeyPressed(0xE);
 					break;
 				case SDLK_f:
-					pressedKeyCode = 0xF;
+					keyboardHandler.KeyPressed(0xF);
 					break;
 				case SDLK_ESCAPE:
 					keepWindowOpen = false;
@@ -137,6 +129,16 @@ namespace Chip8
 				}
 			}
 		}
+	}
+
+	void Window::Show()
+	{
+		SDL_ShowWindow(window);
+	}
+
+	void Window::Hide()
+	{
+		SDL_HideWindow(window);
 	}
 
 	void Window::Maximize()

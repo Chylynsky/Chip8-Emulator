@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include "Counters.h"
 #include "Window.h"
+#include "KeyboardHandler.h"
 
 namespace Chip8
 {
@@ -23,15 +24,14 @@ namespace Chip8
 		GPU gpu;
 		CPU cpu;
 		Timer mainClock;
+		KeyboardHandler& keyboardHandler;
 
 	public:
 
-		Interpreter(Window& window);
+		Interpreter(Window& window, KeyboardHandler& keyboardHandler);
 		~Interpreter();
 		void LoadROM(const std::string& loadPath);
 		void LoadROM(const std::wstring& loadPath);
-		void AttachCallbackToMainClock(std::function<void(void)> callback);
-		void HandleKeyPressed(uint8_t pressedKeyCode);
 		void Start();
 		void Stop();
 		void Reset();

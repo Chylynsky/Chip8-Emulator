@@ -4,10 +4,10 @@
 #include <thread>
 #include <chrono>
 #include <queue>
-#include <mutex>
 #include <exception>
 #include <stdexcept>
 #include "SDL.h"
+#include "KeyboardHandler.h"
 
 #ifdef _WIN32
 #include "Windows.h"
@@ -21,10 +21,7 @@ namespace Chip8
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		std::queue<SDL_Rect> textures;
-		std::string title;
 		bool keepWindowOpen;
-		uint8_t pressedKeyCode;
-		std::mutex windowMutex;
 
 	public:
 
@@ -36,10 +33,11 @@ namespace Chip8
 
 		static void ShowErrorBox(const std::string& message);
 
-		uint8_t GetPressedKeyCode();
 		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
-		void PollEvents();
+		void PollEvents(KeyboardHandler& keyboardHandler);
+		void Show();
+		void Hide();
 		void Maximize();
 		void Minimize();
 		bool KeepWindowOpen();

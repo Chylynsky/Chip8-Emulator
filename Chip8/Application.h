@@ -4,6 +4,7 @@
 #include <string>
 #include "Window.h"
 #include "Interpreter.h"
+#include "KeyboardHandler.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -15,6 +16,7 @@ namespace Chip8
 	{
 		Window window;
 		Interpreter interpreter;
+		KeyboardHandler keyboardHandler;
 
 	public:
 

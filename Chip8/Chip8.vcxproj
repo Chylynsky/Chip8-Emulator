@@ -167,6 +167,7 @@
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="GPU.cpp" />
     <ClCompile Include="Interpreter.cpp" />
+    <ClCompile Include="KeyboardHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RAM.cpp" />
     <ClCompile Include="ROMLoader.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="CPU.h" />
     <ClInclude Include="GPU.h" />
     <ClInclude Include="Interpreter.h" />
+    <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="RAM.h" />
     <ClInclude Include="ROMLoader.h" />
     <ClInclude Include="Timer.h" />
