@@ -20,6 +20,7 @@ namespace Chip8
 					throw std::runtime_error("An error occured while creating the renderer.");
 
 				SDL_GetWindowSize(window, &Width, &Height);
+				SDL_HideWindow(window);
 			}
 		}
 	}

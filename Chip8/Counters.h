@@ -6,6 +6,7 @@ namespace Chip8
 {
 	class Counter
 	{
+		std::mutex counterMutex;
 		uint8_t value;
 
 	public:

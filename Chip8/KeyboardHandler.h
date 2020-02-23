@@ -4,6 +4,11 @@
 #include <cstdint>
 #include <mutex>
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
+
 namespace Chip8
 {
 	class KeyboardHandler

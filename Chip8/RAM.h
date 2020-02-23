@@ -28,6 +28,7 @@ namespace Chip8
 		~RAM();
 		void LoadROM(const std::string& loadPath);
 		void LoadROM(const std::wstring& loadPath);
+		void ClearProgramMemory();
 
 		RAM& operator=(const RAM&) = delete;
 		RAM& operator=(RAM&&) = delete;

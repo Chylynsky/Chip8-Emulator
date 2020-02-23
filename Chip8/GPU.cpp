@@ -8,7 +8,7 @@ namespace Chip8
 		{
 			for (int j = 0; j < display[i].size(); j++)
 			{
-				if (display[i][j] == 1)
+				if (display[i][j] > 0)
 				{
 					SDL_Rect rect{ i * renderScale, j * renderScale, renderScale, renderScale };
 					window.AddToRenderQueue(rect);
@@ -19,7 +19,7 @@ namespace Chip8
 		window.Refresh();
 	}
 
-	GPU::GPU(Window& window) : display{}, window{ window }, renderScale{ window.Width / 64 }
+	GPU::GPU(Window& window) : display{}, window{ window }, renderScale{ window.Width / WIDTH }
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace Chip8
 			for (size_t shift = 0; shift < 8; shift++)
 			{
 				tmp = display[xPos][y];
-				display[xPos][y] ^= (*first >> (8 - shift - 1) & 0xF);
+				display[xPos][y] ^= (*first >> (8 - shift - 1) & 0x1);
 
 				// Result is 1 if any pixel turns from 1 to 0
 				if (tmp == 1 && display[xPos][y] == 0)
@@ -49,8 +49,7 @@ namespace Chip8
 			first++;
 			y = (y < display[0].size() - 1) ? y + 1 : 0;
 		}
-
-		DisplayCurrent();
+		std::async(std::bind(&GPU::DisplayCurrent, this));
 		return result;
 	}
 

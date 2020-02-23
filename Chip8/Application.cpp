@@ -4,7 +4,6 @@ namespace Chip8
 {
 	Application::Application() : window{ "Chip 8 Emulator" }, interpreter{ window, keyboardHandler }
 	{
-		
 	}
 
 	Application::~Application()
@@ -27,7 +26,7 @@ namespace Chip8
 			interpreter.LoadROM(loadPath);
 			std::cout << std::endl;
 #endif
-			//window.Show();
+			window.Show();
 			interpreter.Start();
 		}
 		catch (std::runtime_error & e)
@@ -49,7 +48,7 @@ namespace Chip8
 		while (window.KeepWindowOpen())
 		{
 			window.PollEvents(keyboardHandler);
-			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
 }

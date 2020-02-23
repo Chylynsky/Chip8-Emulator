@@ -88,8 +88,8 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x4: // 8xy4 - The values of Vx and Vy are added together. If the result is greater than 8 bits (i.e., > 255,) VF is set to 1, otherwise 0.
-				generalPurposeRegisters[0xF] = (generalPurposeRegisters[instruction >> 0x8 & 0xF] + generalPurposeRegisters[instruction >> 0x4 & 0xF] > 0xFF) ? 1 : 0;
-				generalPurposeRegisters[instruction >> 0x8 & 0xF] = generalPurposeRegisters[instruction >> 0x8 & 0xF] + generalPurposeRegisters[instruction >> 0x4 & 0xF] > 0xFF;
+				generalPurposeRegisters[0xF] = (generalPurposeRegisters[instruction >> 0x8 & 0xF] + generalPurposeRegisters[instruction >> 0x4 & 0xF] > 0xFF);
+				generalPurposeRegisters[instruction >> 0x8 & 0xF] += generalPurposeRegisters[instruction >> 0x4 & 0xF];
 				programCounter += 2;
 				break;
 			case 0x5: // 8xy5 - If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted from Vx, and the results stored in Vx.
@@ -103,8 +103,8 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x7: // 8xy7 - If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy, and the results stored in Vx.
-				generalPurposeRegisters[0xF] = (generalPurposeRegisters[instruction >> 0x8 & 0xF] < generalPurposeRegisters[instruction >> 0x4 & 0xF]);
-				generalPurposeRegisters[instruction >> 0x4 & 0xF] -= generalPurposeRegisters[instruction >> 0x8 & 0xF];
+				generalPurposeRegisters[0xF] = (generalPurposeRegisters[instruction >> 0x4 & 0xF] > generalPurposeRegisters[instruction >> 0x8 & 0xF]);
+				generalPurposeRegisters[instruction >> 0x8 & 0xF] = generalPurposeRegisters[instruction >> 0x4 & 0xF] - generalPurposeRegisters[instruction >> 0x8 & 0xF];
 				programCounter += 2;
 				break;
 			case 0xE: // 8xyE - If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0. Then Vx is multiplied by 2.
@@ -178,22 +178,22 @@ namespace Chip8
 			switch (instruction & 0xFF)
 			{
 			case 0x07: // Fx07 - The value of DT is placed into Vx.
-				generalPurposeRegisters[instruction >> 8 & 0xF] = delayCounter.GetValue();
+				generalPurposeRegisters[instruction >> 0x8 & 0xF] = delayCounter.GetValue();
 				programCounter += 2;
 				break;
 			case 0x0A: // Fx0A - Wait for a key press, store the value of the key in Vx.
 				if (keyboardHandler.IsAnyKeyPressed())
 				{
-					generalPurposeRegisters[instruction >> 8 & 0xF] = keyboardHandler.GetPressedKeyCode();
+					generalPurposeRegisters[instruction >> 0x8 & 0xF] = keyboardHandler.GetPressedKeyCode();
 					programCounter += 2;
 				}
 				break;
 			case 0x15: // Fx15 - DT is set equal to the value of Vx.
-				delayCounter.SetValue(generalPurposeRegisters[instruction >> 8 & 0xF]);
+				delayCounter.SetValue(generalPurposeRegisters[instruction >> 0x8 & 0xF]);
 				programCounter += 2;
 				break;
-			case 0x18:
-				soundCounter.SetValue(generalPurposeRegisters[instruction >> 8 & 0xF]);
+			case 0x18: // Fx18 - ST is set equal to the value of Vx.
+				soundCounter.SetValue(generalPurposeRegisters[instruction >> 0x8 & 0xF]);
 				programCounter += 2;
 				break;
 			case 0x1E: // Fx1E - The values of I and Vx are added, and the results are stored in I.
@@ -201,12 +201,12 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			case 0x29: // Fx29 - The value of I is set to the location for the hexadecimal sprite corresponding to the value of Vx.
-				memoryAddressRegister = 4 * (instruction >> 8 & 0xF);
+				memoryAddressRegister = 5 * generalPurposeRegisters[instruction >> 8 & 0xF];
 				programCounter += 2;
 				break;
 			case 0x33: // Fx33 - The interpreter takes the decimal value of Vx, and places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
 			{
-				uint8_t regNum = instruction >> 8 & 0xF;
+				uint8_t regNum = instruction >> 0x8 & 0xF;
 				ram[memoryAddressRegister] = generalPurposeRegisters[regNum] / 100;
 				ram[memoryAddressRegister + 1] = (generalPurposeRegisters[regNum] / 10) % 10;
 				ram[memoryAddressRegister + 2] = generalPurposeRegisters[regNum] % 10;
@@ -215,7 +215,7 @@ namespace Chip8
 				break;
 			case 0x55: // Fx55 - The interpreter copies the values of registers V0 through Vx into memory, starting at the address in I.
 			{
-				uint8_t regNum = instruction >> 8 & 0xF;
+				uint8_t regNum = instruction >> 0x8 & 0xF;
 				for (uint8_t i = 0; i < regNum; i++)
 					ram[memoryAddressRegister + i] = generalPurposeRegisters[i];
 			}
@@ -223,7 +223,7 @@ namespace Chip8
 				break;
 			case 0x65: // Fx65 - The interpreter reads values from memory starting at location I into registers V0 through Vx.
 			{
-				uint8_t regNum = instruction >> 8 & 0xF;
+				uint8_t regNum = instruction >> 0x8 & 0xF;
 				for (uint8_t i = 0; i < regNum; i++)
 					generalPurposeRegisters[i] = ram[memoryAddressRegister + i];
 			}
@@ -255,6 +255,10 @@ namespace Chip8
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
 		std::stack<uint16_t>().swap(stack);
 		memoryAddressRegister = 0;
-		programCounter = 0x200;
+
+		for (uint8_t reg : generalPurposeRegisters)
+			reg = 0;
+
+		programCounter = RAM::PROGRAM_MEMORY_ADDRESS;
 	}
 }

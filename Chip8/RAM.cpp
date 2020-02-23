@@ -46,6 +46,13 @@ namespace Chip8
 		loader.Load(memory.begin() + PROGRAM_MEMORY_ADDRESS, memory.end());
 	}
 
+	void RAM::ClearProgramMemory()
+	{
+		auto first = memory.begin() + PROGRAM_MEMORY_ADDRESS;
+		while (first != memory.end())
+			*first = 0;
+	}
+
 	uint8_t& RAM::operator[](uint16_t address)
 	{
 		return memory[address];

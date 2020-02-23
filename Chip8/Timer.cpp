@@ -13,7 +13,7 @@ namespace Chip8
 		}
 	}
 
-	Timer::Timer(std::chrono::milliseconds period) : period{ period }, terminate{ true }
+	Timer::Timer(std::chrono::microseconds period) : period{ period }, terminate{ true }
 	{
 	}
 

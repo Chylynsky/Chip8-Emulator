@@ -16,14 +16,14 @@ namespace Chip8
 	{
 		std::thread timerThread;
 		std::vector<std::function<void(void)>> callbacks;
-		std::chrono::milliseconds period;
+		std::chrono::microseconds period;
 		std::atomic<bool> terminate;
 
 		void TimerProcess();
 
 	public:
 
-		explicit Timer(std::chrono::milliseconds period);
+		explicit Timer(std::chrono::microseconds period);
 		~Timer();
 
 		void Start();

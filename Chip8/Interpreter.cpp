@@ -3,7 +3,7 @@
 namespace Chip8
 {
 	Interpreter::Interpreter(Window& window, KeyboardHandler& keyboardHandler) : ram{}, delayCounter{}, soundCounter{}, gpu{ window }, 
-		cpu{ gpu, ram, delayCounter, soundCounter, keyboardHandler }, mainClock{ PERIOD }, keyboardHandler{ keyboardHandler }
+		cpu{ gpu, ram, delayCounter, soundCounter, keyboardHandler }, mainClock{ MAIN_CLOCK_PERIOD }, keyboardHandler{ keyboardHandler }
 	{
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &delayCounter));
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &soundCounter));
@@ -39,6 +39,7 @@ namespace Chip8
 	{
 		mainClock.Stop();
 		cpu.Reset();
+		ram.ClearProgramMemory();
 		gpu.DisplayClear();
 		mainClock.Start();
 	}

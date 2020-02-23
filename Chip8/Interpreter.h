@@ -16,7 +16,7 @@ namespace Chip8
 {
 	class Interpreter
 	{
-		static constexpr std::chrono::milliseconds PERIOD{ 16 };
+		static constexpr std::chrono::microseconds MAIN_CLOCK_PERIOD{ 2000 };
 
 		RAM ram;
 		Counter delayCounter;

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <array>
+#include <future>
 #include <SDL.h>
 #include "Window.h"
 
@@ -9,7 +10,9 @@ namespace Chip8
 	class GPU
 	{
 		// Original resolution is 64x32 pixels
-		std::array<std::array<uint8_t, 32>, 64> display;
+		static constexpr uint8_t WIDTH{ 64 };
+		static constexpr uint8_t HEIGHT{ 32 };
+		std::array<std::array<uint8_t, HEIGHT>, WIDTH> display;
 		Window& window;
 		int renderScale;
 		
