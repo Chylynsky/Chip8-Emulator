@@ -2,7 +2,7 @@
 
 namespace Chip8
 {
-	Counter::Counter() : value{ 0 }
+	Counter::Counter() : frequencyCounter{ 0 }, value{ 0 }, callback{ nullptr }
 	{
 	}
 
@@ -27,8 +27,29 @@ namespace Chip8
 		std::lock_guard<std::mutex> counterGuard{ counterMutex };
 
 		if (value != 0)
-			value--;
+		{
+			if (callback != nullptr)
+				callback();
+
+			if (frequencyCounter < frequencyDivider - 1)
+			{
+				frequencyCounter++;
+				return;
+			}
+			else
+			{
+				frequencyCounter = 0;
+				value--;
+			}
+		}
 		else
+		{
 			return;
+		}
+	}
+
+	void Counter::AttachCallback(std::function<void(void)> callback)
+	{
+		this->callback = callback;
 	}
 }

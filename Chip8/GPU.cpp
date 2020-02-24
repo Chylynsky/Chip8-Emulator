@@ -34,8 +34,15 @@ namespace Chip8
 		while (first != last)
 		{
 			uint8_t xPos = x;
+
+			if (y >= display[0].size())
+				y %= display[0].size();
+
 			for (size_t shift = 0; shift < 8; shift++)
 			{
+				if (xPos >= display.size())
+					xPos %= display.size();
+
 				tmp = display[xPos][y];
 				display[xPos][y] ^= (*first >> (8 - shift - 1) & 0x1);
 
@@ -43,11 +50,11 @@ namespace Chip8
 				if (tmp == 1 && display[xPos][y] == 0)
 					result = 1;
 
-				xPos = (xPos < display.size() - 1) ? xPos + 1 : 0;
+				xPos++;
 			}
 
 			first++;
-			y = (y < display[0].size() - 1) ? y + 1 : 0;
+			y++;
 		}
 		std::async(std::bind(&GPU::DisplayCurrent, this));
 		return result;

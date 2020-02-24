@@ -113,12 +113,14 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			default:
+			{
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
 				std::cout << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
+			}
 				break;
 			}
 			break;
@@ -161,16 +163,20 @@ namespace Chip8
 				if (keyboardHandler.IsAnyKeyPressed())
 				{
 					programCounter += (generalPurposeRegisters[instruction >> 0x8 & 0xF] != keyboardHandler.GetPressedKeyCode()) ? 2 : 0;
+					programCounter += 2;
 				}
-				programCounter += 2;
+				else
+					programCounter += 2;
 				break;
 			default:
+			{
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
 				std::cout << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
+			}
 				break;
 			}
 			break;
@@ -230,22 +236,26 @@ namespace Chip8
 				programCounter += 2;
 				break;
 			default:
+			{
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
 				std::cout << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
+			}
 				break;
 			}
 			break;
 		default:
+		{
 			std::stringstream sstr;
 			sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
 			std::cout << sstr.str() << std::endl;
 #endif
 			throw std::runtime_error(sstr.str());
+		}
 			break;
 		}
 	}
