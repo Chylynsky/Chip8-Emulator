@@ -166,7 +166,7 @@ namespace Chip8
 					programCounter += 2;
 				}
 				else
-					programCounter += 2;
+					programCounter += 4;
 				break;
 			default:
 			{

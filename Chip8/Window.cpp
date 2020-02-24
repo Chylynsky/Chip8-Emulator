@@ -62,13 +62,16 @@ namespace Chip8
 	void Window::PollEvents(KeyboardHandler& keyboardHandler)
 	{
 		SDL_Event e;
-		keyboardHandler.NoKeyPressed();
 
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
 			{
 				keepWindowOpen = false;
+			}
+			else if (e.type == SDL_KEYUP)
+			{
+				keyboardHandler.NoKeyPressed();
 			}
 			else if (e.type == SDL_KEYDOWN)
 			{
