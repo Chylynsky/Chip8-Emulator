@@ -1,61 +1,36 @@
 #pragma once
-#include <cstdint>
 #include <string>
-#include <thread>
-#include <chrono>
-#include <queue>
 #include <exception>
 #include <stdexcept>
+#include <vector>
+#include <functional>
 #include "SDL.h"
-#include "KeyboardHandler.h"
+#include "Button.h"
 
-#ifdef _WIN32
-#include "Windows.h"
-#include "shobjidl.h"
-#endif
-
-namespace Chip8
+namespace GUI
 {
+	class Button;
+
 	class Window
 	{
+		friend class Button;
+
 		SDL_Window* window;
 		SDL_Renderer* renderer;
-		std::queue<SDL_Rect> textures;
+		SDL_Texture* backgroundImage;
+		std::vector<Button*> buttons;
 		bool keepWindowOpen;
 
+		void AttachButton(Button* button);
+
 	public:
 
-		int Width;
-		int Height;
-
-		Window(const std::string& title);
+		Window(int x, int y, const std::string& title);
 		~Window();
 
-		static void ShowErrorBox(const std::string& message);
-
-		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
-		void PollEvents(KeyboardHandler& keyboardHandler);
-		void Show();
-		void Hide();
-		void Maximize();
-		void Minimize();
+		void HandleEvents();
+		void SetBackgroundImage(std::string loadPath);
 		bool KeepWindowOpen();
 	};
-
-#ifdef _WIN32
-	class OpenFileDialog
-	{
-		PWSTR filePath;
-		HRESULT hr;
-		IFileOpenDialog* dialog;
-		IShellItem* selectedItem;
-
-	public:
-
-		OpenFileDialog();
-		~OpenFileDialog();
-		std::wstring GetFilePath();
-	};
-#endif
 }

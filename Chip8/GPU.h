@@ -3,7 +3,7 @@
 #include <array>
 #include <future>
 #include <SDL.h>
-#include "Window.h"
+#include "GameWindow.h"
 
 namespace Chip8
 {
@@ -13,14 +13,14 @@ namespace Chip8
 		static constexpr uint8_t WIDTH{ 64 };
 		static constexpr uint8_t HEIGHT{ 32 };
 		std::array<std::array<uint8_t, HEIGHT>, WIDTH> display;
-		Window& window;
+		GameWindow& window;
 		int renderScale;
 		
 		void DisplayCurrent();
 
 	public:
 
-		GPU(Window& window);
+		GPU(GameWindow& window);
 		~GPU();
 
 		// (x, y) - desired position of the sprite

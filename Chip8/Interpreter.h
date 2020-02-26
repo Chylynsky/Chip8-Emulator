@@ -9,7 +9,7 @@
 #include "RAM.h"
 #include "Timer.h"
 #include "Counters.h"
-#include "Window.h"
+#include "GameWindow.h"
 #include "KeyboardHandler.h"
 
 namespace Chip8
@@ -28,7 +28,7 @@ namespace Chip8
 
 	public:
 
-		Interpreter(Window& window, KeyboardHandler& keyboardHandler);
+		Interpreter(GameWindow& window, KeyboardHandler& keyboardHandler);
 		~Interpreter();
 		void LoadROM(const std::string& loadPath);
 		void LoadROM(const std::wstring& loadPath);

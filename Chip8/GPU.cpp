@@ -19,7 +19,7 @@ namespace Chip8
 		window.Refresh();
 	}
 
-	GPU::GPU(Window& window) : display{}, window{ window }, renderScale{ window.Width / WIDTH }
+	GPU::GPU(GameWindow& window) : display{}, window{ window }, renderScale{ window.Width / WIDTH }
 	{
 	}
 
@@ -56,7 +56,9 @@ namespace Chip8
 			first++;
 			y++;
 		}
-		std::async(std::bind(&GPU::DisplayCurrent, this));
+
+		DisplayCurrent();
+		//std::async(std::bind(&GPU::DisplayCurrent, this));
 		return result;
 	}
 

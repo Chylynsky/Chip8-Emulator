@@ -4,7 +4,7 @@ namespace Chip8
 {
 	void Timer::TimerProcess()
 	{
-		while (!terminate)
+		while (!terminate.load())
 		{
 			std::this_thread::sleep_for(period);
 
@@ -13,13 +13,14 @@ namespace Chip8
 		}
 	}
 
-	Timer::Timer(std::chrono::microseconds period) : period{ period }, terminate{ true }
+	Timer::Timer(std::chrono::microseconds period) : period{ period }
 	{
+		terminate.store(true);
 	}
 
 	Timer::~Timer()
 	{
-		terminate = true;
+		terminate.store(true);
 
 		if (timerThread.joinable())
 			timerThread.join();
@@ -27,13 +28,13 @@ namespace Chip8
 
 	void Timer::Start()
 	{
-		terminate = false;
+		terminate.store(false);
 		timerThread = std::thread(&Timer::TimerProcess, this);
 	}
 
 	void Timer::Stop()
 	{
-		terminate = true;
+		terminate.store(true);
 
 		if (timerThread.joinable())
 			timerThread.join();
