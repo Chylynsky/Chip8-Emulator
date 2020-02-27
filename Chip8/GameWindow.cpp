@@ -27,11 +27,6 @@ namespace Chip8
 		window = nullptr;
 	}
 
-	void GameWindow::ShowErrorBox(const std::string& message)
-	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", message.c_str(), nullptr);
-	}
-
 	void GameWindow::AddToRenderQueue(SDL_Rect texture)
 	{
 		pixels.push(texture);
@@ -177,7 +172,7 @@ namespace Chip8
 						throw std::runtime_error("An error occured while getting results from file dialog.");
 				}
 				else
-					throw std::runtime_error("No file was selected. Application will close.");
+					throw std::runtime_error("No file selected.");
 			}
 		}
 	}

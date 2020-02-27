@@ -31,8 +31,6 @@ namespace Chip8
 		GameWindow(const std::string& title);
 		~GameWindow();
 
-		static void ShowErrorBox(const std::string& message);
-
 		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
 		void PollEvents(KeyboardHandler& keyboardHandler);

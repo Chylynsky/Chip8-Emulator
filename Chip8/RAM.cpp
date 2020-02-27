@@ -48,6 +48,7 @@ namespace Chip8
 
 	void RAM::ClearProgramMemory()
 	{
+		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		auto first = memory.begin() + PROGRAM_MEMORY_ADDRESS;
 		while (first != memory.end())
 			*first = 0;

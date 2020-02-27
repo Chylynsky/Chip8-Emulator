@@ -37,10 +37,8 @@ namespace Chip8
 
 	void Interpreter::Reset()
 	{
-		mainClock.Stop();
 		cpu.Reset();
 		ram.ClearProgramMemory();
 		gpu.DisplayClear();
-		mainClock.Start();
 	}
 }

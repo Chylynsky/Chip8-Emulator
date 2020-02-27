@@ -8,26 +8,47 @@ namespace Chip8
 			throw std::runtime_error("Could not initialize SDL2 library.");
 		else
 		{
-			window = new Window{ 640, 320, "Chip-8 Emulator" };
-			window->SetBackgroundImage("Resources/Title.bmp");
+			window = new GUI::Window{ 640, 320, "Chip-8 Emulator" };
 
-			Button* loadButton = new Button{ window, 140, 180, 160, 60 };
-			loadButton->SetIdleImage("Resources/LoadButton.bmp");
-			loadButton->SetActiveImage("Resources/LoadButtonActive.bmp");
+			try {
+				window->SetBackgroundImage("Resources/Title.bmp");
+			}
+			catch (std::runtime_error & e) {
+				GUI::ErrorBox(e.what());
+				exit(1);
+			}
+
+			// Delete called in Window object
+			GUI::Button* loadButton = new GUI::Button{ window, 140, 180, 160, 60 };
+			try {
+				loadButton->SetIdleImage("Resources/LoadButton.bmp");
+				loadButton->SetActiveImage("Resources/LoadButtonActive.bmp");
+			}
+			catch (std::runtime_error & e) {
+				GUI::ErrorBox(e.what());
+				exit(1);
+			}
+
 			loadButton->OnClicked = std::bind(&Application::LoadButton_OnClicked, this);
 
-			Button* startButton = new Button{ window, 340, 180, 160, 60 };
-			startButton->SetIdleImage("Resources/StartButton.bmp");
-			startButton->SetActiveImage("Resources/StartButtonActive.bmp");
+			GUI::Button* startButton = new GUI::Button{ window, 340, 180, 160, 60 };
+			try {
+				startButton->SetIdleImage("Resources/StartButton.bmp");
+				startButton->SetActiveImage("Resources/StartButtonActive.bmp");
+			}
+			catch (std::runtime_error & e) {
+				GUI::ErrorBox(e.what());
+				exit(1);
+			}
+
 			startButton->OnClicked = std::bind(&Application::StartButton_OnClicked, this);
 		}
 	}
 
 	Application::~Application()
 	{
-		delete interpreter;
-		delete gameWindow;
 		delete window;
+		window = nullptr;
 		SDL_Quit();
 	}
 
@@ -44,50 +65,33 @@ namespace Chip8
 	void Application::LoadButton_OnClicked()
 	{
 		try {
-#ifdef _WIN32
 			OpenFileDialog dialog;
 			romLoadPath = dialog.GetFilePath();
-#else
-			std::string loadPath;
-			std::cout << "Enter Chip 8 ROM file path: "
-				std::cin >> loadPath;
-			interpreter.LoadROM(loadPath);
-			std::cout << std::endl;
-#endif
 		}
-		catch (std::runtime_error & e)
-		{
-#ifdef _DEBUG
-			std::cerr << e.what() << std::endl;
-#endif
-			GameWindow::ShowErrorBox(e.what());
-			exit(1);
-		}
-		catch (std::out_of_range & e) {
-#ifdef _DEBUG
-			std::cerr << e.what() << std::endl;
-#endif
-			GameWindow::ShowErrorBox(e.what());
-			exit(1);
+		catch (std::runtime_error & e) {
+			GUI::WarningBox{ e.what() };
 		}
 	}
 
 	void Application::StartButton_OnClicked()
 	{
-		gameWindow = new GameWindow("Chip-8 Emulator");
-		interpreter = new Interpreter(*gameWindow, keyboardHandler);
-		interpreter->LoadROM(romLoadPath);
-		interpreter->Start();
-
-		while (gameWindow->KeepWindowOpen())
+		if (romLoadPath.empty())
 		{
-			gameWindow->PollEvents(keyboardHandler);
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			GUI::ErrorBox{ "No ROM loaded!" };
+			return;
 		}
+		else
+		{
+			std::unique_ptr<GameWindow> gameWindow{ new GameWindow("Chip-8 Emulator") };
+			std::unique_ptr<Interpreter>interpreter{ new Interpreter(*gameWindow, keyboardHandler) };
+			interpreter->LoadROM(romLoadPath);
+			interpreter->Start();
 
-		delete interpreter;
-		interpreter = nullptr;
-		delete gameWindow;
-		gameWindow = nullptr;
+			while (gameWindow->KeepWindowOpen())
+			{
+				gameWindow->PollEvents(keyboardHandler);
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			}
+		}
 	}
 }

@@ -57,8 +57,8 @@ namespace Chip8
 			y++;
 		}
 
-		DisplayCurrent();
-		//std::async(std::bind(&GPU::DisplayCurrent, this));
+		//DisplayCurrent();
+		std::future<void> task{ std::async(std::bind(&GPU::DisplayCurrent, this)) };
 		return result;
 	}
 

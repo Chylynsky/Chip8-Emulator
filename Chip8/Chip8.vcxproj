@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Boxes.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Counters.cpp" />
     <ClCompile Include="CPU.cpp" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Boxes.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Counters.h" />
     <ClInclude Include="CPU.h" />
