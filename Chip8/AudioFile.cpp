@@ -13,7 +13,7 @@ namespace Chip8
 			throw std::runtime_error("Could not open audio device.");
 
 		SDL_QueueAudio(deviceId, buffer, length);
-		SDL_PauseAudioDevice(deviceId, 0);
+		SDL_PauseAudioDevice(deviceId, false);
 	}
 
 	AudioFile::~AudioFile()
@@ -29,18 +29,20 @@ namespace Chip8
 
 	void AudioFile::Play()
 	{
+		if (isPlaying)
+			return;
+
 		SDL_QueueAudio(deviceId, buffer, length);
+		//SDL_PauseAudioDevice(deviceId, false);
 		isPlaying = true;
 	}
 
 	void AudioFile::Pause()
 	{
-		SDL_PauseAudioDevice(deviceId, 0);
-		isPlaying = false;
-	}
+		if (!isPlaying)
+			return;
 
-	void AudioFile::AudioCallback(void* data, Uint8* stream, int length)
-	{
-		//SDL_MixAudio(stream, audio_pos, length, SDL_MIX_MAXVOLUME);
+		SDL_PauseAudioDevice(deviceId, true);
+		isPlaying = false;
 	}
 }

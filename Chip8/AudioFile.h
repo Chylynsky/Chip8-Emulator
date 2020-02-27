@@ -23,7 +23,5 @@ namespace Chip8
 		bool IsPlaying();
 		void Play();
 		void Pause();
-
-		static void AudioCallback(void* data, Uint8* stream, int length);
 	};
 }

@@ -9,6 +9,7 @@
 #include "RAM.h"
 #include "Timer.h"
 #include "Counters.h"
+#include "AudioFile.h"
 #include "GameWindow.h"
 #include "KeyboardHandler.h"
 
@@ -24,6 +25,7 @@ namespace Chip8
 		GPU gpu;
 		CPU cpu;
 		Timer mainClock;
+		AudioFile audioFile;
 		KeyboardHandler& keyboardHandler;
 
 	public:

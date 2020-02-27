@@ -33,10 +33,5 @@ uint8_t Chip8::KeyboardHandler::GetPressedKeyCode()
 	if (!isAnyKeyPressed)
 		throw std::runtime_error("No key pressed.");
 	else
-	{
-#ifdef _DEBUG
-		std::cout << "Key pressed: " << static_cast<short>(keyCode) << std::endl;
-#endif
 		return keyCode;
-	}
 }

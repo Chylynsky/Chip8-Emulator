@@ -15,6 +15,9 @@ namespace Chip8
 
 	public:
 
+		std::function<void(void)> CountingOn;
+		std::function<void(void)> CountingFinished;
+
 		Counter();
 		~Counter();
 		void SetValue(uint8_t value);

@@ -3,11 +3,14 @@
 namespace Chip8
 {
 	Interpreter::Interpreter(GameWindow& window, KeyboardHandler& keyboardHandler) : ram{}, delayCounter{}, soundCounter{}, gpu{ window }, 
-		cpu{ gpu, ram, delayCounter, soundCounter, keyboardHandler }, mainClock{ MAIN_CLOCK_PERIOD }, keyboardHandler{ keyboardHandler }
+		cpu{ gpu, ram, delayCounter, soundCounter, keyboardHandler }, mainClock{ MAIN_CLOCK_PERIOD }, audioFile{ "Resources/tone.wav" }, keyboardHandler{ keyboardHandler }
 	{
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &delayCounter));
 		mainClock.AttachCallback(std::bind(&Counter::Decrement, &soundCounter));
 		mainClock.AttachCallback(std::bind(&CPU::ExecuteCycle, &cpu));
+
+		soundCounter.CountingOn = std::bind(&AudioFile::Play, &audioFile);
+		soundCounter.CountingOn = std::bind(&AudioFile::Pause, &audioFile);
 	}
 
 	Interpreter::~Interpreter()
