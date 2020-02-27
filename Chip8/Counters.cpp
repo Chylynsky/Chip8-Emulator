@@ -50,6 +50,7 @@ namespace Chip8
 
 	void Counter::AttachCallback(std::function<void(void)> callback)
 	{
+		std::lock_guard<std::mutex> counterGuard{ counterMutex };
 		this->callback = callback;
 	}
 }

@@ -9,11 +9,6 @@
 #include "SDL.h"
 #include "KeyboardHandler.h"
 
-#ifdef _WIN32
-#include "Windows.h"
-#include "shobjidl.h"
-#endif
-
 namespace Chip8
 {
 	class GameWindow
@@ -40,20 +35,4 @@ namespace Chip8
 		void Minimize();
 		bool KeepWindowOpen();
 	};
-
-#ifdef _WIN32
-	class OpenFileDialog
-	{
-		PWSTR filePath;
-		HRESULT hr;
-		IFileOpenDialog* dialog;
-		IShellItem* selectedItem;
-
-	public:
-
-		OpenFileDialog();
-		~OpenFileDialog();
-		std::wstring GetFilePath();
-	};
-#endif
 }

@@ -8,8 +8,8 @@
 #include "Interpreter.h"
 #include "KeyboardHandler.h"
 
-#ifdef _DEBUG
-#include <iostream>
+#ifdef _WIN32
+#include "OpenFileDialog.h"
 #endif
 
 namespace Chip8
