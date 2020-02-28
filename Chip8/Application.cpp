@@ -65,8 +65,12 @@ namespace Chip8
 	void Application::LoadButton_OnClicked()
 	{
 		try {
-			OpenFileDialog dialog;
+#ifdef _WIN32
+			GUI::OpenFileDialog dialog;
 			romLoadPath = dialog.GetFilePath();
+#else
+			GUI::ErrorBox{ "Your system is not currently supported." };
+#endif
 		}
 		catch (std::runtime_error & e) {
 			GUI::WarningBox{ e.what() };
