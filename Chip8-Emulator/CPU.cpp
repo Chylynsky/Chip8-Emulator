@@ -16,8 +16,10 @@ namespace Chip8
 	{
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
 		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
+
+		uint16_t instruction = ram[programCounter] << 8 | ram[programCounter + 1];
 		
-		switch (uint16_t instruction = ram[programCounter] << 8 | ram[programCounter + 1]; instruction >> 0xC)
+		switch (instruction >> 0xC)
 		{
 		case 0x0:
 			switch (instruction & 0xFF)

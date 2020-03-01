@@ -4,7 +4,7 @@ namespace Chip8
 {
 	Application::Application() : window{ nullptr }, gameWindow{ nullptr }, interpreter{ nullptr }
 	{
-		if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) == -1)
 			throw std::runtime_error("Could not initialize SDL2 library.");
 		else
 		{
@@ -15,7 +15,7 @@ namespace Chip8
 			}
 			catch (std::runtime_error & e) {
 				GUI::ErrorBox(e.what());
-				exit(1);
+				std::exit(1);
 			}
 
 			// Delete called in Window object
@@ -26,7 +26,7 @@ namespace Chip8
 			}
 			catch (std::runtime_error & e) {
 				GUI::ErrorBox(e.what());
-				exit(1);
+				std::exit(1);
 			}
 
 			loadButton->OnClicked = std::bind(&Application::LoadButton_OnClicked, this);
@@ -38,7 +38,7 @@ namespace Chip8
 			}
 			catch (std::runtime_error & e) {
 				GUI::ErrorBox(e.what());
-				exit(1);
+				std::exit(1);
 			}
 
 			startButton->OnClicked = std::bind(&Application::StartButton_OnClicked, this);
@@ -64,16 +64,14 @@ namespace Chip8
 
 	void Application::LoadButton_OnClicked()
 	{
+		GUI::OpenFileDialog fileDialog{ "Select ROM" };
 		try {
-#ifdef _WIN32
-			GUI::OpenFileDialog dialog;
-			//romLoadPath = dialog.GetFilePath();
-#else
-			GUI::ErrorBox{ "Your system is not currently supported." };
-#endif
+			fileDialog.Show();
+			romLoadPath = fileDialog.GetFilePath();
 		}
 		catch (std::runtime_error & e) {
-			GUI::WarningBox{ e.what() };
+			GUI::ErrorBox{ e.what() };
+			std::exit(1);
 		}
 	}
 
@@ -81,7 +79,7 @@ namespace Chip8
 	{
 		if (romLoadPath.empty())
 		{
-			GUI::ErrorBox{ "No ROM loaded!" };
+			GUI::WarningBox{ "No ROM loaded!" };
 			return;
 		}
 		else

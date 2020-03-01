@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <memory>
+#include <sstream>
 #include "GUI.h"
 #include "GameWindow.h"
 #include "Interpreter.h"
@@ -17,7 +18,7 @@ namespace Chip8
 		GameWindow* gameWindow;
 		Interpreter* interpreter;
 		KeyboardHandler keyboardHandler;
-		std::wstring romLoadPath;
+		std::string romLoadPath;
 
 	public:
 

@@ -309,7 +309,7 @@ private:
     const char *filter; // a filter string of the chooser
     pair(Fl_GTK_File_Chooser* c, const char *f) {
       running = c; 
-      filter = strdup(f);
+      filter = _strdup(f);
     };
     ~pair() {
       free((char*)filter);
