@@ -5,13 +5,7 @@
 #include <array>
 #include <exception>
 #include <stdexcept>
-#include <array>
 #include "ROMLoader.h"
-
-#ifdef _DEBUG
-#include <iostream>
-#endif
-
 
 namespace Chip8
 {

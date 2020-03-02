@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <string>
 #include <memory>
-#include <sstream>
 #include "GUI.h"
 #include "GameWindow.h"
 #include "Interpreter.h"

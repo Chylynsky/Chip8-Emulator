@@ -4,7 +4,7 @@ namespace Chip8
 {
 	GameWindow::GameWindow(const std::string& title) : keepWindowOpen{ true }
 	{
-		window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_MAXIMIZED);
+		window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 		if (!window)
 			throw std::runtime_error("An error occured while creating the window.");
@@ -121,26 +121,6 @@ namespace Chip8
 				}
 			}
 		}
-	}
-
-	void GameWindow::Show()
-	{
-		SDL_ShowWindow(window);
-	}
-
-	void GameWindow::Hide()
-	{
-		SDL_HideWindow(window);
-	}
-
-	void GameWindow::Maximize()
-	{
-		SDL_MaximizeWindow(window);
-	}
-
-	void GameWindow::Minimize()
-	{
-		SDL_MinimizeWindow(window);
 	}
 
 	bool GameWindow::KeepWindowOpen()

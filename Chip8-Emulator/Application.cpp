@@ -18,7 +18,6 @@ namespace Chip8
 				std::exit(1);
 			}
 
-			// Delete called in Window object
 			GUI::Button* loadButton = new GUI::Button{ window, 140, 180, 160, 60 };
 			try {
 				loadButton->SetIdleImage("Resources/LoadButton.bmp");

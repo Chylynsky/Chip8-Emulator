@@ -1,14 +1,9 @@
 #pragma once
-#include <cstdint>
 #include <chrono>
-#include <initializer_list>
 #include <thread>
 #include <vector>
 #include <atomic>
-#include <cmath>
 #include <functional>
-#include <algorithm>
-#include <utility>
 
 namespace Chip8
 {

@@ -165,6 +165,7 @@
     <ClCompile Include="RAM.cpp" />
     <ClCompile Include="ROMLoader.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TonePlayer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="RAM.h" />
     <ClInclude Include="ROMLoader.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TonePlayer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -9,6 +9,7 @@ namespace GUI
 {
 	class Window;
 
+	// Buttons have two states represented by two seperate images - Idle and Active
 	class Button
 	{
 		SDL_Renderer* renderer;

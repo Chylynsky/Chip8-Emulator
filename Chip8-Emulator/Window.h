@@ -11,6 +11,7 @@ namespace GUI
 {
 	class Button;
 
+	// Simple class for window creation with background image and buttons.
 	class Window
 	{
 		friend class Button;

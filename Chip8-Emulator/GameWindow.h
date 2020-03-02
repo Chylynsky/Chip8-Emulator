@@ -1,8 +1,5 @@
 #pragma once
-#include <cstdint>
 #include <string>
-#include <thread>
-#include <chrono>
 #include <queue>
 #include <exception>
 #include <stdexcept>
@@ -29,10 +26,6 @@ namespace Chip8
 		void AddToRenderQueue(SDL_Rect texture);
 		void Refresh();
 		void PollEvents(KeyboardHandler& keyboardHandler);
-		void Show();
-		void Hide();
-		void Maximize();
-		void Minimize();
 		bool KeepWindowOpen();
 	};
 }
