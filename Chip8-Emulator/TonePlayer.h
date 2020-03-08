@@ -17,12 +17,9 @@ namespace Chip8
 		static constexpr float SamplingFrequency{ 44100.0f };
 
 		SDL_AudioSpec audioSpec;
-		std::thread tonePlayerThread;
 		std::vector<uint8_t> samples;
-		bool isPlaying;
 		float frequency;
 
-		void PlaybackProcess();
 		static void AudioCallback(void*, uint8_t*, int);
 
 	public:

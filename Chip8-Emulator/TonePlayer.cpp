@@ -10,7 +10,7 @@ namespace Chip8
 			*(stream + i) = tonePlayer->samples[i];
 	}
 
-	TonePlayer::TonePlayer(float frequency) : isPlaying{ false }, frequency { frequency }
+	TonePlayer::TonePlayer(float frequency) : frequency { frequency }
 	{
 		float period = 1.0f / frequency;
 		float samplingPeriod = 1.0f / SamplingFrequency;
