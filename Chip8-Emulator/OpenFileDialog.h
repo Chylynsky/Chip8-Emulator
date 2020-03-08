@@ -18,10 +18,12 @@ namespace GUI
 
 	public:
 
-		OpenFileDialog();
-		OpenFileDialog(const std::string& title);
+		explicit OpenFileDialog(const std::string& filter, const std::string& title = "Pick a file");
 		~OpenFileDialog();
 		void Show();
 		const std::string& GetFilePath() const;
+
+		OpenFileDialog& operator=(const OpenFileDialog&) = delete;
+		OpenFileDialog& operator=(OpenFileDialog&&) = delete;
 	};
 }

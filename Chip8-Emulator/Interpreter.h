@@ -33,10 +33,16 @@ namespace Chip8
 
 		Interpreter(GameWindow& window, KeyboardHandler& keyboardHandler);
 		~Interpreter();
+
+		// Load ROM file into virtual RAM memory
 		void LoadROM(const std::string& loadPath);
 		void LoadROM(const std::wstring& loadPath);
+		
+		// Run the loaded program
 		void Start();
+		// Stop the execution
 		void Stop();
+		// Start from the beginning
 		void Reset();
 	};
 }
