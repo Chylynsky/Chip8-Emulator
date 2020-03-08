@@ -2,16 +2,11 @@
 
 namespace GUI
 {
-	OpenFileDialog::OpenFileDialog() : fileDialog{ new Fl_Native_File_Chooser }
-	{
-		fileDialog->type(Fl_Native_File_Chooser::BROWSE_FILE);
-		fileDialog->title("Pick a file");
-	}
-
-	OpenFileDialog::OpenFileDialog(const std::string& title) : fileDialog{ new Fl_Native_File_Chooser }
+	OpenFileDialog::OpenFileDialog(const std::string& filter, const std::string& title) : fileDialog{ new Fl_Native_File_Chooser }
 	{
 		fileDialog->type(Fl_Native_File_Chooser::BROWSE_FILE);
 		fileDialog->title(title.c_str());
+		fileDialog->filter(filter.c_str());
 	}
 
 	OpenFileDialog::~OpenFileDialog()

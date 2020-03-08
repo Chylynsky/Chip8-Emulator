@@ -5,13 +5,15 @@ namespace Chip8
 	Application::Application() : window{ nullptr }, gameWindow{ nullptr }, interpreter{ nullptr }
 	{
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) == -1)
-			throw std::runtime_error("Could not initialize SDL2 library.");
+		{
+			GUI::ErrorBox{ "Could not initialize SDL2 library." };
+			std::exit(1);
+		}
 		else
 		{
-			// Create window
-			window = new GUI::Window{ 640, 320, "Chip-8 Emulator" };
-
 			try {
+				// Create window
+				window = new GUI::Window{ 640, 320, "Chip-8 Emulator" };
 				window->SetBackgroundImage("Resources/Title.bmp");
 			}
 			catch (std::runtime_error & e) {
@@ -29,7 +31,7 @@ namespace Chip8
 				GUI::ErrorBox(e.what());
 				std::exit(1);
 			}
-
+			// Attach callback
 			loadButton->OnClicked = std::bind(&Application::LoadButton_OnClicked, this);
 
 			GUI::Button* startButton = new GUI::Button{ window, 340, 180, 160, 60 };
@@ -41,7 +43,7 @@ namespace Chip8
 				GUI::ErrorBox(e.what());
 				std::exit(1);
 			}
-
+			// Attach callback
 			startButton->OnClicked = std::bind(&Application::StartButton_OnClicked, this);
 		}
 	}
@@ -53,6 +55,7 @@ namespace Chip8
 		SDL_Quit();
 	}
 
+	// Run the GUI
 	void Application::Run()
 	{
 		while (window->KeepWindowOpen())
@@ -63,19 +66,21 @@ namespace Chip8
 		}
 	}
 
+	// Open the file dialog and save the selected files path to romLoadPath
 	void Application::LoadButton_OnClicked()
 	{
-		GUI::OpenFileDialog fileDialog{ "Select ROM" };
+		GUI::OpenFileDialog fileDialog{ "*.ch8", "Select ROM" };
 		try {
 			fileDialog.Show();
-			romLoadPath = fileDialog.GetFilePath();
 		}
 		catch (std::runtime_error & e) {
 			GUI::ErrorBox{ e.what() };
 			std::exit(1);
 		}
+		romLoadPath = fileDialog.GetFilePath();
 	}
 
+	// If ROM file is selected, load it to memory and run the interpreter
 	void Application::StartButton_OnClicked()
 	{
 		if (romLoadPath.empty())

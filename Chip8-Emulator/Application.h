@@ -7,7 +7,6 @@
 #include "GameWindow.h"
 #include "Interpreter.h"
 #include "KeyboardHandler.h"
-#include "OpenFileDialog.h"
 
 namespace Chip8
 {
@@ -24,9 +23,12 @@ namespace Chip8
 
 		Application();
 		~Application();
-		void Run();
 
+		// Run the GUI
+		void Run();
+		// Open the file dialog and save the selected files path to romLoadPath
 		void LoadButton_OnClicked();
+		// If ROM file is selected, load it to memory and run the interpreter
 		void StartButton_OnClicked();
 	};
 }
