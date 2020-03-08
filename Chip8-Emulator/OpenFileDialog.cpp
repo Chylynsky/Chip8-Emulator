@@ -32,7 +32,7 @@ namespace GUI
 		}
 	}
 
-	std::string OpenFileDialog::GetFilePath()
+	const std::string& OpenFileDialog::GetFilePath() const
 	{
 		return loadPath;
 	}

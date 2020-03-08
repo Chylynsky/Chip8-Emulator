@@ -10,6 +10,7 @@
 
 namespace GUI
 {
+	// Class responsible for open file dialog creation
 	class OpenFileDialog
 	{
 		Fl_Native_File_Chooser* fileDialog;
@@ -21,6 +22,6 @@ namespace GUI
 		OpenFileDialog(const std::string& title);
 		~OpenFileDialog();
 		void Show();
-		std::string GetFilePath();
+		const std::string& GetFilePath() const;
 	};
 }

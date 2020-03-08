@@ -56,6 +56,7 @@ namespace Chip8
 
 	uint8_t& RAM::operator[](uint16_t address)
 	{
+		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		return memory[address];
 	}
 

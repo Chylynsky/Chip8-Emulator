@@ -12,11 +12,10 @@ namespace Chip8
 	}
 
 	// Comments in CPU::ExecuteCycle method taken from http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
+	// Execute one instruction specified by the programCounter
 	void CPU::ExecuteCycle()
 	{
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
-		std::lock_guard<std::mutex> ramGuard{ ram.ramMutex };
-
 		uint16_t instruction = ram[programCounter] << 8 | ram[programCounter + 1];
 		
 		switch (instruction >> 0xC)

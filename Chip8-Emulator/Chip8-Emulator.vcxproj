@@ -151,7 +151,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AudioFile.cpp" />
     <ClCompile Include="Boxes.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Counters.cpp" />
@@ -170,7 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="AudioFile.h" />
     <ClInclude Include="Boxes.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Counters.h" />

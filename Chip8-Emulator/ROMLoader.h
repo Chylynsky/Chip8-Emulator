@@ -8,6 +8,7 @@
 
 namespace Chip8
 {
+	// Class taking care of loading *.ch8 files to the memory
 	class ROMLoader
 	{
 		std::ifstream file;
@@ -22,6 +23,7 @@ namespace Chip8
 		void Load(iter first, const iter last);
 	};
 
+	// Pass the loaded *ch8 file to the specified container.
 	template<typename iter>
 	void ROMLoader::Load(iter first, const iter last)
 	{

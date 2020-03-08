@@ -4,6 +4,8 @@
 
 namespace GUI
 {
+	// Structs responsible for displaying warning and error windows
+	//
 	struct ErrorBox
 	{
 	private:
@@ -19,4 +21,5 @@ namespace GUI
 	public:
 		WarningBox(const std::string& message);
 	};
+	//
 }

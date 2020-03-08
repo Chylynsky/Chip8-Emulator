@@ -15,24 +15,30 @@
 #include <iostream>
 #endif
 
-#undef min
-#undef max
-
 namespace Chip8
 {
+	// CPU class handles Chip8 CPU emulation
 	class CPU
 	{
+		// Number of general purpose registers
 		static constexpr uint8_t NUMBER_OF_REGISTERS{ 16 };
 
+		// CPU connections with peripheral "hardware"
+		//
 		GPU& gpu;
 		RAM& ram;
 		Counter& delayCounter;
 		Counter& soundCounter;
 		KeyboardHandler& keyboardHandler;
+		//
+
+		// Internal CPU logic
+		//
 		std::stack<uint16_t> stack;
 		std::array<uint8_t, NUMBER_OF_REGISTERS> generalPurposeRegisters;
 		uint16_t memoryAddressRegister;
 		uint16_t programCounter;
+		//
 
 		// Random numbers generation
 		std::default_random_engine randomEngine;
@@ -45,6 +51,7 @@ namespace Chip8
 		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter, KeyboardHandler& keyboardHandler);
 		~CPU();
 		void ExecuteCycle();
+		// Clear the registers and set the program counter to the beginning
 		void Reset();
 
 		CPU& operator=(const CPU&) = delete;
