@@ -9,6 +9,7 @@ namespace GUI
 {
 	class Window;
 
+	// Button class.
 	// Buttons have two states represented by two seperate images - Idle and Active
 	class Button
 	{
@@ -22,6 +23,7 @@ namespace GUI
 		SDL_Texture* imageCurrent;
 		SDL_Rect rect;
 
+		// Check if the [x, y] coordinates are inside the button
 		bool IsMouseOver(int x, int y);
 
 	public:
@@ -31,11 +33,15 @@ namespace GUI
 		Button(Window* window, int x, int y, int width, int height);
 		~Button();
 
+		// Buttons should be refreshed to display their current state, function is called by the parent window
 		void Refresh();
+		// React to the mouse events
 		// e - processed event 
 		// {x, y} - current mouse position
 		void ProcessEvent(SDL_Event& e, int x, int y);
+		// Attach image that is displayed when button is in idle state
 		void SetIdleImage(std::string loadPath);
+		// Attach image that is displayed when button is in active state
 		void SetActiveImage(std::string loadPath);
 	};
 }

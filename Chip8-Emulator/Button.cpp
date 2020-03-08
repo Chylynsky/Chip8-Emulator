@@ -13,6 +13,7 @@ namespace GUI
 	Button::Button(Window* window, int x, int y, int width, int height) : renderer{ window->renderer }, x { x }, y{ y }, width{ width },
 		height{ height }, imageIdle{ nullptr }, imageActive{ nullptr }, imageCurrent{ nullptr }, rect{ x, y, width, height }, OnClicked{ nullptr }
 	{
+		// Creating the button attaches it to the window
 		window->AttachButton(this);
 	}
 
@@ -22,13 +23,13 @@ namespace GUI
 		SDL_DestroyTexture(imageActive);
 		SDL_DestroyTexture(imageCurrent);
 	}
-
+	
 	void Button::Refresh()
 	{
 		if (imageCurrent != nullptr)
 			SDL_RenderCopy(renderer, imageCurrent, nullptr, &rect);
 	}
-
+	
 	void Button::ProcessEvent(SDL_Event& e, int x, int y)
 	{
 		bool isMouseOver = IsMouseOver(x, y);
@@ -41,7 +42,7 @@ namespace GUI
 		if (isMouseOver && e.type == SDL_MOUSEBUTTONDOWN && OnClicked)
 			OnClicked();
 	}
-
+	
 	void Button::SetIdleImage(std::string loadPath)
 	{
 		SDL_Surface* surface = SDL_LoadBMP(loadPath.c_str());
@@ -54,7 +55,7 @@ namespace GUI
 			SDL_FreeSurface(surface);
 		}
 	}
-
+	
 	void Button::SetActiveImage(std::string loadPath)
 	{
 		SDL_Surface* surface = SDL_LoadBMP(loadPath.c_str());

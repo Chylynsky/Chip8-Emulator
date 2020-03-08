@@ -7,15 +7,19 @@
 
 namespace Chip8
 {
+	// Class emulating GPU bahaviour in Chip8 and responsible for graphics generation to the specified window
 	class GPU
 	{
 		// Original resolution is 64x32 pixels
 		static constexpr uint8_t WIDTH{ 64 };
 		static constexpr uint8_t HEIGHT{ 32 };
+		// Display array
 		std::array<std::array<uint8_t, HEIGHT>, WIDTH> display;
 		GameWindow& window;
+		// Ratio of current display width and original width in pixels
 		int renderScale;
 		
+		// Display the current frame in the specified window
 		void DisplayCurrent();
 
 	public:

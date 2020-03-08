@@ -8,6 +8,7 @@ namespace Chip8
 			throw std::runtime_error("Could not initialize SDL2 library.");
 		else
 		{
+			// Create window
 			window = new GUI::Window{ 640, 320, "Chip-8 Emulator" };
 
 			try {
@@ -18,6 +19,7 @@ namespace Chip8
 				std::exit(1);
 			}
 
+			// Create buttons
 			GUI::Button* loadButton = new GUI::Button{ window, 140, 180, 160, 60 };
 			try {
 				loadButton->SetIdleImage("Resources/LoadButton.bmp");
@@ -83,8 +85,8 @@ namespace Chip8
 		}
 		else
 		{
-			std::unique_ptr<GameWindow> gameWindow{ new GameWindow("Chip-8 Emulator") };
-			std::unique_ptr<Interpreter>interpreter{ new Interpreter(*gameWindow, keyboardHandler) };
+			std::unique_ptr<GameWindow> gameWindow{ std::make_unique<GameWindow>("Chip-8 Emulator") };
+			std::unique_ptr<Interpreter>interpreter{ std::make_unique<Interpreter>(*gameWindow, keyboardHandler) };
 			interpreter->LoadROM(romLoadPath);
 			interpreter->Start();
 

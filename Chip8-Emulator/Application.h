@@ -11,6 +11,7 @@
 
 namespace Chip8
 {
+	// Main class, controlls the execution of the program as well as main window looks
 	class Application
 	{
 		GUI::Window* window;

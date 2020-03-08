@@ -9,14 +9,13 @@
 
 namespace Chip8
 {
+	// RAM struct handles Chip8 RAM emulation
 	struct RAM
 	{
 		static constexpr uint16_t MEMORY_CAPACITY{ 4096 };
 		static constexpr uint16_t FONTSET_ADDRESS{ 0x00 };
 		static constexpr uint16_t PROGRAM_MEMORY_ADDRESS{ 0x200 };
 		static const std::array<uint8_t, 80> FONTSET;
-
-		std::mutex ramMutex;
 
 		RAM();
 		~RAM();
@@ -30,6 +29,7 @@ namespace Chip8
 
 	private:
 
+		std::mutex ramMutex;
 		std::array<uint8_t, MEMORY_CAPACITY> memory;
 	};
 }

@@ -9,12 +9,13 @@
 #include "RAM.h"
 #include "Timer.h"
 #include "Counters.h"
-#include "AudioFile.h"
+#include "TonePlayer.h"
 #include "GameWindow.h"
 #include "KeyboardHandler.h"
 
 namespace Chip8
 {
+	// Interpreter class takes care of proper emulation of the Chip8
 	class Interpreter
 	{
 		static constexpr std::chrono::microseconds MAIN_CLOCK_PERIOD{ 2000 };
@@ -25,7 +26,7 @@ namespace Chip8
 		GPU gpu;
 		CPU cpu;
 		Timer mainClock;
-		AudioFile audioFile;
+		TonePlayer tonePlayer;
 		KeyboardHandler& keyboardHandler;
 
 	public:
