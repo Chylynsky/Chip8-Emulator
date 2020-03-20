@@ -20,26 +20,31 @@ namespace Chip8
 		mainClock.Stop();
 	}
 
+	// Load ROM file into virtual RAM memory
 	void Interpreter::LoadROM(const std::string& loadPath)
 	{
 		ram.LoadROM(loadPath);
 	}
 
+	// Load ROM file into virtual RAM memory
 	void Interpreter::LoadROM(const std::wstring& loadPath)
 	{
 		ram.LoadROM(loadPath);
 	}
 
+	// Run the loaded program
 	void Interpreter::Start()
 	{
 		mainClock.Start();
 	}
 
+	// Stop the execution
 	void Interpreter::Stop()
 	{
 		mainClock.Stop();
 	}
 
+	// Start from the beginning
 	void Interpreter::Reset()
 	{
 		cpu.Reset();

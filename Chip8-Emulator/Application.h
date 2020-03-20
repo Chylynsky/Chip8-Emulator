@@ -8,6 +8,10 @@
 #include "Interpreter.h"
 #include "KeyboardHandler.h"
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 namespace Chip8
 {
 	// Main class, controlls the execution of the program as well as main window looks

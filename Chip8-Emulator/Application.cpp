@@ -6,6 +6,9 @@ namespace Chip8
 	{
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) == -1)
 		{
+#ifdef _DEBUG
+			std::cerr << "Could not initialize SDL2 library." << std::endl;
+#endif
 			GUI::ErrorBox{ "Could not initialize SDL2 library." };
 			std::exit(1);
 		}
@@ -16,7 +19,10 @@ namespace Chip8
 				window = new GUI::Window{ 640, 320, "Chip-8 Emulator" };
 				window->SetBackgroundImage("Resources/Title.bmp");
 			}
-			catch (std::runtime_error & e) {
+			catch (const std::runtime_error & e) {
+#ifdef _DEBUG
+				std::cerr << e.what() << std::endl;
+#endif
 				GUI::ErrorBox(e.what());
 				std::exit(1);
 			}
@@ -27,7 +33,10 @@ namespace Chip8
 				loadButton->SetIdleImage("Resources/LoadButton.bmp");
 				loadButton->SetActiveImage("Resources/LoadButtonActive.bmp");
 			}
-			catch (std::runtime_error & e) {
+			catch (const std::runtime_error & e) {
+#ifdef _DEBUG
+				std::cerr << e.what() << std::endl;
+#endif
 				GUI::ErrorBox(e.what());
 				std::exit(1);
 			}
@@ -39,7 +48,10 @@ namespace Chip8
 				startButton->SetIdleImage("Resources/StartButton.bmp");
 				startButton->SetActiveImage("Resources/StartButtonActive.bmp");
 			}
-			catch (std::runtime_error & e) {
+			catch (const std::runtime_error & e) {
+#ifdef _DEBUG
+				std::cerr << e.what() << std::endl;
+#endif
 				GUI::ErrorBox(e.what());
 				std::exit(1);
 			}
@@ -73,7 +85,10 @@ namespace Chip8
 		try {
 			fileDialog.Show();
 		}
-		catch (std::runtime_error & e) {
+		catch (const std::runtime_error & e) {
+#ifdef _DEBUG
+			std::cerr << e.what() << std::endl;
+#endif
 			GUI::ErrorBox{ e.what() };
 			std::exit(1);
 		}
@@ -85,6 +100,9 @@ namespace Chip8
 	{
 		if (romLoadPath.empty())
 		{
+#ifdef _DEBUG
+			std::cerr << "No ROM loaded!" << std::endl;
+#endif
 			GUI::WarningBox{ "No ROM loaded!" };
 			return;
 		}
@@ -92,7 +110,19 @@ namespace Chip8
 		{
 			std::unique_ptr<GameWindow> gameWindow{ std::make_unique<GameWindow>("Chip-8 Emulator") };
 			std::unique_ptr<Interpreter>interpreter{ std::make_unique<Interpreter>(*gameWindow, keyboardHandler) };
-			interpreter->LoadROM(romLoadPath);
+
+			try {
+				interpreter->LoadROM(romLoadPath);
+			}
+			catch (const std::exception & e) {
+#ifdef _DEBUG
+				std::cerr << e.what() << std::endl;
+#endif
+				interpreter->Reset();
+				GUI::ErrorBox{ e.what() };
+				return;
+			}
+
 			interpreter->Start();
 
 			while (gameWindow->KeepWindowOpen())

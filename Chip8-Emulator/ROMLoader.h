@@ -6,6 +6,10 @@
 #include <stdexcept>
 #include <cstdint>
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 namespace Chip8
 {
 	// Class taking care of loading *.ch8 files to the memory
@@ -30,7 +34,7 @@ namespace Chip8
 		while (!file.eof())
 		{
 			if (first == last)
-				throw std::out_of_range("Loaded file caused memory corruption.");
+				throw std::out_of_range("Loaded file is too large.");
 
 			*(first++) = file.get();
 		}
