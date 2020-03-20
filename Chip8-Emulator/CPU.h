@@ -50,6 +50,8 @@ namespace Chip8
 		
 		CPU(GPU& gpu, RAM& ram, Counter& delayCounter, Counter& soundCounter, KeyboardHandler& keyboardHandler);
 		~CPU();
+
+		// Execute one instruction specified by the programCounter
 		void ExecuteCycle();
 		// Clear the registers and set the program counter to the beginning
 		void Reset();

@@ -19,12 +19,18 @@ namespace Chip8
 
 		RAM();
 		~RAM();
+
+		// Load ROM file into memory
 		void LoadROM(const std::string& loadPath);
+		// Load ROM file into memory
 		void LoadROM(const std::wstring& loadPath);
+		// Clear the memory
 		void ClearProgramMemory();
 
 		RAM& operator=(const RAM&) = delete;
 		RAM& operator=(RAM&&) = delete;
+
+		// Thread safe, range checked access
 		uint8_t& operator[](uint16_t address);
 
 	private:

@@ -36,11 +36,13 @@ namespace Chip8
 		SDL_CloseAudio();
 	}
 
+	// Start playback
 	void TonePlayer::Play()
 	{
 		SDL_PauseAudio(false);
 	}
 
+	// Stop playback
 	void TonePlayer::Stop()
 	{
 		SDL_PauseAudio(true);

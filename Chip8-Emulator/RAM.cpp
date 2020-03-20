@@ -24,7 +24,7 @@ namespace Chip8
 
 	RAM::RAM() : memory{}
 	{
-		// Fill RAM memory with font data
+		// Fill RAM with font data
 		std::copy(FONTSET.begin(), FONTSET.end(), memory.begin() + FONTSET_ADDRESS);
 	}
 
@@ -32,6 +32,7 @@ namespace Chip8
 	{
 	}
 
+	// Load ROM file into memory
 	void RAM::LoadROM(const std::string& loadPath)
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
@@ -39,6 +40,7 @@ namespace Chip8
 		loader.Load(memory.begin() + PROGRAM_MEMORY_ADDRESS, memory.end());
 	}
 
+	// Load ROM file into memory
 	void RAM::LoadROM(const std::wstring& loadPath)
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
@@ -46,18 +48,20 @@ namespace Chip8
 		loader.Load(memory.begin() + PROGRAM_MEMORY_ADDRESS, memory.end());
 	}
 
+	// Clear the memory
 	void RAM::ClearProgramMemory()
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
 		auto first = memory.begin() + PROGRAM_MEMORY_ADDRESS;
 		while (first != memory.end())
-			*first = 0;
+			*(first++) = 0;
 	}
 
+	// Thread safe, range checked access
 	uint8_t& RAM::operator[](uint16_t address)
 	{
 		std::lock_guard<std::mutex> ramGuard{ ramMutex };
-		return memory[address];
+		return memory.at(address);
 	}
 
 }

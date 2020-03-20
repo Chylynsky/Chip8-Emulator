@@ -10,16 +10,19 @@ namespace Chip8
 	{
 	}
 
+	// Set the counters value
 	void Counter::SetValue(uint8_t value)
 	{
 		this->value = value;
 	}
 
+	// Get the counters value
 	uint8_t Counter::GetValue()
 	{
 		return value;
 	}
 
+	// Decrease the counters value, this method needs to be called periodically by the main clock
 	void Counter::Decrement()
 	{
 		if (value != 0)

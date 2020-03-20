@@ -36,7 +36,7 @@ namespace Chip8
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << sstr.str() << std::endl;
+				std::cerr << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
 				break;
@@ -118,7 +118,7 @@ namespace Chip8
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << sstr.str() << std::endl;
+				std::cerr << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
 			}
@@ -174,7 +174,7 @@ namespace Chip8
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << sstr.str() << std::endl;
+				std::cerr << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
 			}
@@ -241,7 +241,7 @@ namespace Chip8
 				std::stringstream sstr;
 				sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-				std::cout << sstr.str() << std::endl;
+				std::cerr << sstr.str() << std::endl;
 #endif
 				throw std::runtime_error(sstr.str());
 			}
@@ -253,7 +253,7 @@ namespace Chip8
 			std::stringstream sstr;
 			sstr << "Instruction 0x" << std::hex << instruction << " not recognized at location 0x" << programCounter << " (" << std::dec << programCounter << ").";
 #ifdef _DEBUG
-			std::cout << sstr.str() << std::endl;
+			std::cerr << sstr.str() << std::endl;
 #endif
 			throw std::runtime_error(sstr.str());
 		}
@@ -261,6 +261,7 @@ namespace Chip8
 		}
 	}
 
+	// Clear the registers and set the program counter to the beginning
 	void CPU::Reset()
 	{
 		std::lock_guard<std::mutex> cpuGuard{ cpuMutex };
