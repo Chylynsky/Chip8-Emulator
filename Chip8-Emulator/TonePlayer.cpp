@@ -18,7 +18,7 @@ namespace Chip8
 
 		// Create samples of distorted sine wave
 		for (uint16_t t = 0; t < samples.size(); t++)
-			samples[t] = static_cast<uint8_t>(std::round(128.0f * std::sin(2.0f * M_PI * frequency / SamplingFrequency * static_cast<float>(t)) + 127.0f));
+			samples[t] = static_cast<uint8_t>(std::round(0.5f * 128.0f * std::sin(2.0f * M_PI * frequency / SamplingFrequency * static_cast<float>(t)) + 127.0f));
 
 		audioSpec.channels = 1;
 		audioSpec.freq = static_cast<int>(SamplingFrequency);
