@@ -9,7 +9,7 @@ namespace Chip8
 #ifdef _DEBUG
 			std::cerr << "Could not initialize SDL2 library." << std::endl;
 #endif
-			GUI::ErrorBox{ "Could not initialize SDL2 library." };
+			GUI::ErrorBox errorBox{ "Could not initialize SDL2 library." };
 			std::exit(1);
 		}
 		else
@@ -23,7 +23,7 @@ namespace Chip8
 #ifdef _DEBUG
 				std::cerr << e.what() << std::endl;
 #endif
-				GUI::ErrorBox(e.what());
+				GUI::ErrorBox errorBox(e.what());
 				std::exit(1);
 			}
 
@@ -37,7 +37,7 @@ namespace Chip8
 #ifdef _DEBUG
 				std::cerr << e.what() << std::endl;
 #endif
-				GUI::ErrorBox(e.what());
+				GUI::ErrorBox errorBox(e.what());
 				std::exit(1);
 			}
 			// Attach callback
@@ -52,7 +52,7 @@ namespace Chip8
 #ifdef _DEBUG
 				std::cerr << e.what() << std::endl;
 #endif
-				GUI::ErrorBox(e.what());
+				GUI::ErrorBox errorBox(e.what());
 				std::exit(1);
 			}
 			// Attach callback
@@ -89,7 +89,7 @@ namespace Chip8
 #ifdef _DEBUG
 			std::cerr << e.what() << std::endl;
 #endif
-			GUI::ErrorBox{ e.what() };
+			GUI::ErrorBox errorBox{ e.what() };
 			std::exit(1);
 		}
 		romLoadPath = fileDialog.GetFilePath();
@@ -103,7 +103,7 @@ namespace Chip8
 #ifdef _DEBUG
 			std::cerr << "No ROM loaded!" << std::endl;
 #endif
-			GUI::WarningBox{ "No ROM loaded!" };
+			GUI::WarningBox errorBox{ "No ROM loaded!" };
 			return;
 		}
 		else
@@ -119,7 +119,7 @@ namespace Chip8
 				std::cerr << e.what() << std::endl;
 #endif
 				interpreter->Reset();
-				GUI::ErrorBox{ e.what() };
+				GUI::ErrorBox errorBox{ e.what() };
 				return;
 			}
 

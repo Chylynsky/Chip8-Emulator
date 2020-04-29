@@ -2,3 +2,4 @@ x64/
 roms/
 Debug/
 Release/
+SDL2.dll
