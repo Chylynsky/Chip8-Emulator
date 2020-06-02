@@ -16,12 +16,19 @@ ALl the requirements regarding placement of the above libraries can be found in 
 User interface:
 
 ![GUI 1](/Screenshots/1.png)
+
 ![GUI 2](/Screenshots/2.png)
+
 ![GUI 3](/Screenshots/3.png)
 
 Example gameplays:
 
+- Airplane:
+
 ![GAMEPLAY 1](/Screenshots/4.png)
+
+- Brix:
+
 ![GAMEPLAY 2](/Screenshots/5.png)
 
 ## Author
